@@ -2,10 +2,12 @@
 
 roomDialog::roomDialog(QWidget * parent) : QWidget(parent) {
 	ui.setupUi(this);
+
+	// instantiate the Recognition software
 }
 
 
-void roomDialog::closeEvent(QCloseEvent *event) //If the user prexx the "X" close button
+void roomDialog::closeEvent(QCloseEvent *event) //If the user press the "X" close button
 {
 	parent->show();
 }
