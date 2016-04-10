@@ -63,6 +63,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath);$(RSSDK_DIR)/Include;$(RSSDK_DIR)/Sample/Common/Include;$(IncludePath)</IncludePath>
+    <LibraryPath>$(VC_LibraryPath_x64);$(WindowsSDK_LibraryPath_x64);$(NETFXKitsDir)Lib\um\x64;$(RSSDK_DIR)/lib/$(PlatformName);$(RSSDK_DIR)/sample/common/lib/$(PlatformName)/$(PlatformToolset);$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
@@ -101,7 +103,7 @@
       <OutputFile>$(OutDir)\$(ProjectName).exe</OutputFile>
       <AdditionalLibraryDirectories>$(QTDIR)\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Multimediad.lib;Qt5MultimediaWidgetsd.lib;Qt5Concurrentd.lib;Qt5UiToolsd.lib;Qt5WebSocketsd.lib;Qt5Widgetsd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>qtmaind.lib;Qt5Cored.lib;Qt5Guid.lib;Qt5Multimediad.lib;Qt5MultimediaWidgetsd.lib;Qt5Concurrentd.lib;Qt5UiToolsd.lib;Qt5WebSocketsd.lib;Qt5Widgetsd.lib;libpxcmd_d.lib;libpxcutilsmd_d.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -137,6 +139,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="ConsoleTools.cpp" />
+    <ClCompile Include="Debugger.cpp" />
+    <ClCompile Include="Dictionary.cpp" />
+    <ClCompile Include="easywsclient.cpp" />
     <ClCompile Include="GeneratedFiles\Debug\moc_learningdialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -187,12 +193,19 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="HandTools.cpp" />
     <ClCompile Include="learningdialog.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="Node.cpp" />
     <ClCompile Include="normaldialog.cpp" />
+    <ClCompile Include="Parser.cpp" />
     <ClCompile Include="recordingdialog.cpp" />
     <ClCompile Include="roomdialog.cpp" />
     <ClCompile Include="sign2speechprototype.cpp" />
+    <ClCompile Include="ThreadApp.cpp" />
+    <ClCompile Include="ThreadDictionary.cpp" />
+    <ClCompile Include="ThreadHandTools.cpp" />
+    <ClCompile Include="wingetopt.cpp" />
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="sign2speechprototype.h">
@@ -235,11 +248,23 @@
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ConsoleTools.h" />
+    <ClInclude Include="Debugger.h" />
+    <ClInclude Include="Dictionary.h" />
+    <ClInclude Include="easywsclient.hpp" />
     <ClInclude Include="GeneratedFiles\ui_learningdialog.h" />
     <ClInclude Include="GeneratedFiles\ui_normaldialog.h" />
     <ClInclude Include="GeneratedFiles\ui_recordingdialog.h" />
     <ClInclude Include="GeneratedFiles\ui_roomdialog.h" />
     <ClInclude Include="GeneratedFiles\ui_sign2speechprototype.h" />
+    <ClInclude Include="HandTools.h" />
+    <ClInclude Include="Node.h" />
+    <ClInclude Include="Parser.h" />
+    <ClInclude Include="targetver.h" />
+    <ClInclude Include="ThreadApp.h" />
+    <ClInclude Include="ThreadDictionary.h" />
+    <ClInclude Include="ThreadHandTools.h" />
+    <ClInclude Include="wingetopt.h" />
     <CustomBuild Include="recordingdialog.hpp">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing recordingdialog.hpp...</Message>

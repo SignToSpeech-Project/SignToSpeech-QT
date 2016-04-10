@@ -1,0 +1,20 @@
+{
+	"lundi": [
+		{
+			"word": "lundi",
+			"gesture": "0x0000000f"
+		}
+	],
+	"mardi": [
+		{
+			"word": "mardi",
+			"gesture": "0x00000003"
+		}
+	],
+	"mercredi": [
+		{
+			"word": "mercredi",
+			"gesture": "0x00000155"
+		}
+	]
+}
