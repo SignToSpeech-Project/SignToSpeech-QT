@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
+    <width>402</width>
     <height>300</height>
    </rect>
   </property>
@@ -78,7 +78,7 @@
      <item>
       <widget class="QSpinBox" name="spinBox_1">
        <property name="maximum">
-        <number>500</number>
+        <number>255</number>
        </property>
        <property name="value">
         <number>192</number>
@@ -88,7 +88,7 @@
      <item>
       <widget class="QSpinBox" name="spinBox_2">
        <property name="maximum">
-        <number>500</number>
+        <number>255</number>
        </property>
        <property name="value">
         <number>168</number>
@@ -97,6 +97,9 @@
      </item>
      <item>
       <widget class="QSpinBox" name="spinBox_3">
+       <property name="maximum">
+        <number>255</number>
+       </property>
        <property name="value">
         <number>1</number>
        </property>
@@ -104,6 +107,9 @@
      </item>
      <item>
       <widget class="QSpinBox" name="spinBox_4">
+       <property name="maximum">
+        <number>255</number>
+       </property>
        <property name="value">
         <number>1</number>
        </property>
