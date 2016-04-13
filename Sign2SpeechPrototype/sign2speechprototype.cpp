@@ -1,6 +1,7 @@
 #include "sign2speechprototype.h"
 #include "normaldialog.hpp"
 #include "learningdialog.hpp"
+#include <iostream>
 
 Sign2SpeechPrototype::Sign2SpeechPrototype(QWidget *parent)
 	: QMainWindow(parent)
