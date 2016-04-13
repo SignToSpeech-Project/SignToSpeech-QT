@@ -40,7 +40,7 @@ learningDialog::~learningDialog() {
 }
 
 
-void learningDialog::closeEvent(QCloseEvent *event) //If the user prexx the "X" close button
+void learningDialog::closeEvent(QCloseEvent *event) //If the user press the "X" close button
 {
 	parent->show();
 }
