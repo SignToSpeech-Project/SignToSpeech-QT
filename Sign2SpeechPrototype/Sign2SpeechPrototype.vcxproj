@@ -205,6 +205,12 @@
     <ClCompile Include="ThreadApp.cpp" />
     <ClCompile Include="ThreadDictionary.cpp" />
     <ClCompile Include="ThreadHandTools.cpp" />
+    <ClCompile Include="ThreadLearning.cpp" />
+    <ClCompile Include="ThreadLearningDictionary.cpp" />
+    <ClCompile Include="ThreadLearningHandTools.cpp" />
+    <ClCompile Include="ThreadRecognition.cpp" />
+    <ClCompile Include="ThreadRecognitionDictionary.cpp" />
+    <ClCompile Include="ThreadRecognitionHandTools.cpp" />
     <ClCompile Include="wingetopt.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -264,6 +270,12 @@
     <ClInclude Include="ThreadApp.h" />
     <ClInclude Include="ThreadDictionary.h" />
     <ClInclude Include="ThreadHandTools.h" />
+    <ClInclude Include="ThreadLearning.h" />
+    <ClInclude Include="ThreadLearningDictionary.h" />
+    <ClInclude Include="ThreadLearningHandTools.h" />
+    <ClInclude Include="ThreadRecognition.h" />
+    <ClInclude Include="ThreadRecognitionDictionary.h" />
+    <ClInclude Include="ThreadRecognitionHandTools.h" />
     <ClInclude Include="wingetopt.h" />
     <CustomBuild Include="recordingdialog.hpp">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>

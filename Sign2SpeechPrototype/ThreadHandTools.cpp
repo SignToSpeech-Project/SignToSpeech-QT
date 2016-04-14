@@ -7,9 +7,7 @@
 
 WebSocket::pointer ThreadHandTools::webSock = NULL;
 
-ThreadHandTools::ThreadHandTools(mutex *mBR, mutex *mBW, mutex *mSS, bool* pg, vector<long>* bR, vector<vector<pair<string, long>>>* bW, char *ad, char *r, bool *sS) : ThreadApp(mBR, mBW, mSS, pg, bR, bW, sS) {
-	address = ad;
-	room = r;
+ThreadHandTools::ThreadHandTools() {
 }
 
 /** Display incoming message from the subtitling channel **/
@@ -21,7 +19,8 @@ void ThreadHandTools::handle_message(const std::string & message) {
 
 //Start the thread
 void ThreadHandTools::run() {
-	
+	/*
+
 	ConsoleTools ct;
 
 	// open a WebSocket channel with the negotiation server
@@ -37,7 +36,7 @@ void ThreadHandTools::run() {
 #endif
 	std::stringstream webSocketAddress;
 	webSocketAddress << "ws://" << address << "/ws/subtitle/" << room;
-	
+
 	ThreadHandTools::webSock = WebSocket::from_url(webSocketAddress.str());
 
 	// if the connection has been done correctly
@@ -47,7 +46,7 @@ void ThreadHandTools::run() {
 
 		HandTools h;
 
-		/** SDK initialisation **/
+		// SDK initialisation
 		ct.setSession(PXCSession::CreateInstance());
 		if (!(ct.getSession()))
 		{
@@ -106,7 +105,7 @@ void ThreadHandTools::run() {
 			g_handConfiguration->Release();
 			g_handConfiguration = NULL;
 		}
-		/** End of initialisation **/
+		// End of initialisation 
 
 		pxcI32 numOfHands = 0;
 
@@ -260,5 +259,5 @@ void ThreadHandTools::run() {
 	delete ThreadHandTools::webSock;
 #ifdef _WIN32
 	WSACleanup();
-#endif
+#endif */
 }

@@ -4,12 +4,12 @@
 #include "Parser.h"
 #include "Debugger.h"
 
-ThreadDictionary::ThreadDictionary(mutex *mBR, mutex *mBW, mutex *mSS, bool* pg, vector<long>* bR, vector<vector<pair<string, long>>>* bW, bool *sS) : ThreadApp(mBR, mBW, mSS, pg, bR, bW, sS) {
+ThreadDictionary::ThreadDictionary() {
 }
 
 //Start the thread
 void ThreadDictionary::run() {
-
+/*
 	//Dictionary Initialisation-------------------------------------------------------------------------
 	Dictionary d;
 
@@ -91,6 +91,6 @@ void ThreadDictionary::run() {
 
 	vector<vector<pair<string, long>>> v = d.createVectorDictionary(); // Create vector of vectors of pairs from the dict
 
-	p.WriteJsonFile(v);
+	p.WriteJsonFile(v); */
 
 }

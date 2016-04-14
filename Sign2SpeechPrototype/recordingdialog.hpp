@@ -1,13 +1,15 @@
 ﻿#pragma once
 #include <QWidget>
 #include "ui_recordingdialog.h"
+#include <mutex>
+using namespace std;
 
 class recordingDialog : public QWidget {
 	Q_OBJECT
 
 public:
 	recordingDialog(QWidget * parent = Q_NULLPTR);
-	void manageThreads(QString word, int nbGesture);
+	void manageThreads(condition_variable *cond_var, bool *program_on_recording);
 	void setParent(QWidget* p) { parent = p; }
 	~recordingDialog();
 
@@ -16,6 +18,7 @@ private slots :
 
 private:
 	Ui::recordingDialog ui;
-	bool program_on = true;
 	QWidget* parent;
+
+	bool *program_on;
 };

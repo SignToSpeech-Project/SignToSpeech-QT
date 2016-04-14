@@ -1,21 +1,18 @@
 #pragma once
 
-#include "ThreadApp.h"
-#include "ConsoleTools.h"
-#include "easywsclient.hpp"
-#include "pxchanddata.h"
-#include "pxcmetadata.h"
-#include "service/pxcsessionservice.h"
-
 #include "pxchanddata.h"
 #include "pxchandconfiguration.h"
 #include "pxcsensemanager.h"
+#include "ThreadRecognition.h"
+
+#include "easywsclient.hpp"
 
 using easywsclient::WebSocket;
+ 
+class ThreadRecognitionHandTools : public ThreadRecognition
+{
 
-class ThreadHandTools {
-
-private :
+private:
 
 	PXCHandModule *g_handModule;
 	PXCHandData *g_handDataOutput;
@@ -25,14 +22,15 @@ private :
 
 	char *address;
 	char *room;
-
 public:
-	ThreadHandTools();
+	ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, bool* pg, vector<long>* bR, char *ad, char *r, bool *sS);
 
 	static WebSocket::pointer webSock;
 
 	void static handle_message(const std::string & message);
 
 	//Start the thread
-	void run();	
+	void run();
+	~ThreadRecognitionHandTools();
 };
+

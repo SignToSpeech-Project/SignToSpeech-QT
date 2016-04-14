@@ -2,37 +2,26 @@
 #include <windows.h>
 #include <thread>
 #include "learningdialog.hpp"
-#include "recordingdialog.hpp"
 
 
 
 
 
-void threadDico(Ui::learningDialog ui) {
-	Sleep(2000);
-	ui.lineEditWord->setText("J'ai attendu 2 secondes");
+
+void learningDialog::threadDico( bool *program_on, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_dico) {
+	ThreadLearningDictionary d( mBufferW, program_on, bufferWrite, cond_var_dico);
+	d.run();
 }
 
 
-////// TEST THREAD T
-//TODO A CHANGER : on les sauvegarderas en attribut de la classe (ou celle d'après) et une fois fini il faudra les free
-//Thread managing the camera and the gestures recognization
-void  threadHandTool(Ui::learningDialog ui) {
-	Sleep(5000);
-	ui.spinBoxGestures->setValue(10);
-	}
-
-void lancementThread(Ui::learningDialog ui) {
-	std::thread *tHandTools = new std::thread(threadHandTool,ui);
-	std::thread *tDico = new std::thread(threadDico,ui);
+void  learningDialog::threadHandTools(string * s, int * v, bool *program_on, bool *program_on_recording, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_gui, condition_variable *cond_var_dico ,recordingDialog* rD) {
+	ThreadLearningHandTools t(mBufferW, program_on, program_on_recording, bufferWrite, s, v, cond_var_gui, cond_var_dico, rD);
+	t.run();
 }
+
 
 learningDialog::learningDialog(QWidget * parent) : QWidget(parent) {
 	ui.setupUi(this);
-	lancementThread(ui);
-
-
-
 }
 
 learningDialog::~learningDialog() {
@@ -43,6 +32,13 @@ learningDialog::~learningDialog() {
 void learningDialog::closeEvent(QCloseEvent *event) //If the user press the "X" close button
 {
 	parent->show();
+	program_on = false;
+	cond_var_gui.notify_all();
+	cond_var_dico.notify_all();
+	tHandTools->join();
+	tDico->join();
+	free(tHandTools);
+	free(tDico);
 }
 
 void learningDialog::on_pushButtonValidation_clicked() {
@@ -53,10 +49,13 @@ void learningDialog::on_pushButtonValidation_clicked() {
 		msgBox.exec();
 	}
 	else {
-		recordingDialog *d = new recordingDialog();
-		d->show();
-		d->setParent(this);
-		d->manageThreads(ui.lineEditWord->text(), ui.spinBoxGestures->value());
+		meaningWord = temp.toStdString();
+		nbGestures = ui.spinBoxGestures->value();
+
+		rD = new recordingDialog();
+		rD->show();
+		rD->setParent(this);
+		rD->manageThreads(&cond_var_gui,&program_on_recording);
 		this->hide();
 	}
 }

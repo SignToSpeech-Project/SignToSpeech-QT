@@ -9,16 +9,14 @@ recordingDialog::~recordingDialog() {
 }
 
 
-void recordingDialog::manageThreads(QString word, int nbGesture) {
-	//TODO : Start thread, on leur passera l'ui pour qu'il mette à jour l'affichage et créer les buffer écriture
-	//Joindre le thread handtools (une fois qu'on a fini d'enregistrer tout les gestes , ou validation à chaque geste).
-	ui.textBrowser->setText("Please, wait");
+void recordingDialog::manageThreads(condition_variable *cond_var, bool *program_on_recording) {
+	program_on = program_on_recording;
+	*program_on = true;
+	cond_var->notify_one(); //To notify ThreadHandTools that it can start recording
 }
 
 void recordingDialog::closeEvent(QCloseEvent *event) {
-	//TODO : Mutex
-	program_on = false;
-	//Joindre threads.
+	*program_on = false;
 	parent->show();
 	
 }
