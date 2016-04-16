@@ -11,6 +11,7 @@ public:
 	recordingDialog(QWidget * parent = Q_NULLPTR);
 	void manageThreads(condition_variable *cond_var, bool *program_on_recording);
 	void setParent(QWidget* p) { parent = p; }
+	void pushMessage(QString msg);
 	~recordingDialog();
 
 private slots :

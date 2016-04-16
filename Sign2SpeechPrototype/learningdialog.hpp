@@ -32,7 +32,7 @@ private:
 	void  static threadHandTools(string * s, int * v, bool *program_on, bool *program_on_recording, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_gui, condition_variable *cond_var_dico,recordingDialog* rD);
 	void static threadDico(bool *program_on, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_dico);
 
-	std::thread* 	tHandTools = new std::thread(threadHandTools, &meaningWord, &nbGestures, &program_on, &program_on_recording, &mBufferW, &bufferWrite, &cond_var_gui,&cond_var_dico, rD);
+	std::thread* tHandTools = new std::thread(threadHandTools, &meaningWord, &nbGestures, &program_on, &program_on_recording, &mBufferW, &bufferWrite, &cond_var_gui,&cond_var_dico, rD);
 	std::thread* tDico = new std::thread(threadDico, &program_on, &mBufferW, &bufferWrite, &cond_var_dico);
 
 

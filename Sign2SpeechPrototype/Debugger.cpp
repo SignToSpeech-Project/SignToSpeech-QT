@@ -1,3 +1,3 @@
 #include "Debugger.h"
 
-int Debugger::DEBUG_MODE = false;
+int Debugger::DEBUG_MODE = true;

@@ -8,6 +8,11 @@ recordingDialog::~recordingDialog() {
 	
 }
 
+void recordingDialog::pushMessage(QString msg) {
+	/*if (ui.textBrowser != NULL) {
+		ui.textBrowser->append(msg);
+	}*/
+}
 
 void recordingDialog::manageThreads(condition_variable *cond_var, bool *program_on_recording) {
 	program_on = program_on_recording;

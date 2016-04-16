@@ -16,5 +16,11 @@
 			"word": "mercredi",
 			"gesture": "0x00000155"
 		}
+	],
+	"Test": [
+		{
+			"word": "Test",
+			"gesture": "0x00000000"
+		}
 	]
 }

@@ -54,6 +54,7 @@ void ThreadLearningHandTools::run() {
 		if (!(ct.getSession()))
 		{
 			Debugger::error("Failed Creating PXCSession");
+			rD->pushMessage("Failed Creating PXCSession");
 			return;
 		}
 
@@ -62,6 +63,7 @@ void ThreadLearningHandTools::run() {
 		{
 			ct.releaseAll();
 			Debugger::error("Failed Creating PXCSenseManager");
+			rD->pushMessage("Failed Creating PXCSenseManager");
 			return;
 		}
 
@@ -69,6 +71,7 @@ void ThreadLearningHandTools::run() {
 		{
 			ct.releaseAll();
 			Debugger::error("Failed Enabling Hand Module");
+			rD->pushMessage("Failed Creating Hand Module");
 			return;
 		}
 
@@ -77,6 +80,7 @@ void ThreadLearningHandTools::run() {
 		{
 			ct.releaseAll();
 			Debugger::error("Failed Creating PXCHandModule");
+			rD->pushMessage("Failed Creating PXCHandModule");
 			return;
 		}
 
@@ -85,6 +89,7 @@ void ThreadLearningHandTools::run() {
 		{
 			ct.releaseAll();
 			Debugger::error("Failed Creating PXCHandData");
+			rD->pushMessage("Failed Creating PXCHandData");
 			return;
 		}
 
@@ -93,6 +98,7 @@ void ThreadLearningHandTools::run() {
 		{
 			ct.releaseAll();
 			Debugger::error("Failed Creating PXCHandConfiguration");
+			rD->pushMessage("Failed Creating PXCHandConfiguration");
 			return;
 		}
 
@@ -116,6 +122,7 @@ void ThreadLearningHandTools::run() {
 		if ((ct.getSenseManager())->Init() == PXC_STATUS_NO_ERROR)
 		{
 			Debugger::info("\nPXCSenseManager Initializing OK\n========================\n");
+			rD->pushMessage("\nPXCSenseManager Initializing OK\n========================\n");
 
 			while (*program_on) {
 				std::mutex m;
@@ -137,16 +144,19 @@ void ThreadLearningHandTools::run() {
 					h.learningMode(*nbGestures);
 
 					Debugger::info("Learning mode is starting in 5 secondes, be ready !");
+					rD->pushMessage("Learning mode is starting in 5 secondes, be ready !");
 					for (int i = 5; i > 0; i--) {
 						Debugger::info(to_string(i));
 						Sleep(1000);
 					}
 					Debugger::info("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
+					rD->pushMessage("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
 
 
+					bool saved = false;
 
 					// Acquiring frames from input device
-					while ((ct.getSenseManager())->AcquireFrame(true) == PXC_STATUS_NO_ERROR && (*program_on) && (*program_on_recording))
+					while ((ct.getSenseManager())->AcquireFrame(true) == PXC_STATUS_NO_ERROR && (*program_on) && (*program_on_recording) && (!saved))
 					{
 
 						(ct.getSenseManager())->AcquireFrame(true);
@@ -175,6 +185,8 @@ void ThreadLearningHandTools::run() {
 										learningGesture.clear();
 
 										Debugger::info("------------------------WORD SAVED------------------------");
+										rD->pushMessage("------------------------WORD SAVED------------------------");
+										saved = true;
 										Sleep(2000);
 									}
 									else {
@@ -183,11 +195,13 @@ void ThreadLearningHandTools::run() {
 										cpt_Gesture++;
 										string msg = "------------------------BE READY FOR THE GESTURE NUMERO " + to_string(cpt_Gesture) + " IN 5 SECONDES------------------------";
 										Debugger::info(msg);
+										rD->pushMessage(QString::fromStdString(msg));
 										for (int i = 5; i > 0; i--) {
 											Debugger::info(to_string(i));
 											Sleep(1000);
 										}
 										Debugger::info("------------------------Do your gesture NOW during 3 secondes------------------------");
+										rD->pushMessage("------------------------Do your gesture NOW during 3 secondes------------------------");
 									}
 								}
 
@@ -204,6 +218,7 @@ void ThreadLearningHandTools::run() {
 		{
 			ct.releaseAll();
 			Debugger::error("Failed Initializing PXCSenseManager");
+			rD->pushMessage("Failed Initializing PXCSenseManager");
 			return;
 		}
 
