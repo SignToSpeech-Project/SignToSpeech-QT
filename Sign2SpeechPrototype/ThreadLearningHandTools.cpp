@@ -32,7 +32,8 @@ void ThreadLearningHandTools::run() {
 	ConsoleTools ct;
 
 	// open a WebSocket channel with the negotiation server
-#ifdef _WIN32
+	// we don't need this for learning
+/*#ifdef _WIN32
 	INT rc;
 	WSADATA wsaData;
 
@@ -41,7 +42,7 @@ void ThreadLearningHandTools::run() {
 		printf("WSAStartup Failed.\n");
 		return;
 	}
-#endif
+#endif*/
 
 
 	// try to start RealSense SDK
@@ -209,9 +210,10 @@ void ThreadLearningHandTools::run() {
 
 	ct.releaseAll();
 
-#ifdef _WIN32
+
+/*#ifdef _WIN32
 	WSACleanup();
-#endif
+#endif*/
 }
 
 ThreadLearningHandTools::~ThreadLearningHandTools()
