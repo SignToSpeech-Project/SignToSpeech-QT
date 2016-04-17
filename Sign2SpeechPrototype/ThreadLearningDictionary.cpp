@@ -43,6 +43,7 @@ void ThreadLearningDictionary::run() {
 		else {
 			std::mutex m;
 			std::unique_lock<std::mutex> lock(m);
+			cout << "dictionary" << cond_var_dico << endl;
 			cond_var_dico->wait(lock); //Sleep until a word is added to bufferWrite
 		}
 	}

@@ -6,7 +6,7 @@
 
 
 
-ThreadRecognitionDictionary::ThreadRecognitionDictionary(mutex *mBR, mutex* mSS, bool* pg, bool* pr, vector<long>* bR, bool *ss, recognitionDialog* rd, condition_variable *cD) : ThreadRecognition(mBR, mSS, pg, bR, ss, cD)
+ThreadRecognitionDictionary::ThreadRecognitionDictionary(mutex *mBR, mutex* mSS, bool* pg, bool* pr, vector<long>* bR, bool *ss, recognitionDialog* rd, condition_variable *cD) : ThreadRecognition(mBR, mSS, pg, bR, ss)
 {
 	rD = rd;
 	program_on_room = pr;

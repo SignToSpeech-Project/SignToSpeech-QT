@@ -15,7 +15,7 @@ protected:
 	condition_variable *cond_var_gui; //To know where the GUI is ready
 
 public :
-	ThreadApp(bool* pg, condition_variable* cD);
+	ThreadApp(bool* pg);
 	
 	//Start the thread
 	virtual void run() = 0 ;

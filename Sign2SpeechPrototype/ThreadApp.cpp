@@ -1,6 +1,6 @@
 #include "ThreadApp.h"
 
-ThreadApp::ThreadApp(bool* pg, condition_variable* cD) {
+ThreadApp::ThreadApp(bool* pg) {
 	this->program_on = pg;
-	this->cond_var_gui = cD;
+
 }

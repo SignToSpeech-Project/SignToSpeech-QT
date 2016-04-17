@@ -2,7 +2,7 @@
 
 
 
-ThreadRecognition::ThreadRecognition(mutex *mBR, mutex* mSS, bool* pg, vector<long>* bR, bool *ss, condition_variable *cD) : ThreadApp(pg,cD)
+ThreadRecognition::ThreadRecognition(mutex *mBR, mutex* mSS, bool* pg, vector<long>* bR, bool *ss) : ThreadApp(pg)
 {
 	this->mBufferR = mBR;
 	this->mSymbolSent = mSS;

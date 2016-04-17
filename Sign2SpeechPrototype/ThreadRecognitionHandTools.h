@@ -22,11 +22,11 @@ private:
 	PXCHandData *g_handDataOutput;
 	PXCHandConfiguration *g_handConfiguration;
 
-	string *address;
-	string *room;
+	char *address;
+	char *room;
 
 public:
-	ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, bool* pg, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD);
+	ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, bool* pg, vector<long>* bR, char *ad,char *r, bool *sS, condition_variable *cD);
 
 	static WebSocket::pointer webSock;
 

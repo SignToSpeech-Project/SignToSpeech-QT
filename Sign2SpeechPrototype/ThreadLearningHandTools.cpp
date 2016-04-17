@@ -8,14 +8,14 @@
 
 
 
-ThreadLearningHandTools::ThreadLearningHandTools(mutex *mBW, bool* pg, bool* pgr, vector<vector<pair<string, long>>>* bW, string * s, int * nb, condition_variable *cS, condition_variable *cD, learningDialog* ld) : ThreadLearning(mBW, pg, bW, cD)
+ThreadLearningHandTools::ThreadLearningHandTools(learningDialog* ld) : ThreadLearning(ld->getMutexW(), ld->getPg(), ld->getBufferWrite(), ld->getCondDico())
 {
-	wordMeaning = s;
-	cond_var_gui = cS;
-	nbGestures = nb;
 	lD = ld;
-	program_on_recording = pgr;
-
+	wordMeaning = lD->getMeaning();
+	cond_var_gui = lD->getCondGui();
+	nbGestures = lD->getNbGestures();
+	program_on_recording = ld->getPgr();
+	cout << " thread" << cond_var_dico << endl;
 }
 
 
@@ -49,9 +49,8 @@ void ThreadLearningHandTools::run() {
 	
 	HandTools h;
 
-	Sleep(5000);
-
 	// SDK initialisation 
+	/*
 	ct.setSession(PXCSession::CreateInstance());
 	if (!(ct.getSession()))
 	{
@@ -242,7 +241,7 @@ void ThreadLearningHandTools::run() {
 
 	#ifdef _WIN32
 	WSACleanup();
-	#endif
+	#endif*/
 
 }
 

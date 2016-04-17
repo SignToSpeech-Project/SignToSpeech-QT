@@ -31,10 +31,12 @@ private:
 	int * nbGestures; //Nb Gestures for this word
 	bool * program_on_recording = false; //To prevent unexpected end of recordingDialog
 
+	condition_variable *cond_var_gui; //To know where the GUI is ready
+
 	learningDialog * lD; //Windows to show informations
 
 public:
-	ThreadLearningHandTools(mutex *mBW, bool* pg, bool* pgr, vector<vector<pair<string, long>>>* bW, string * s, int * nb, condition_variable *cV, condition_variable *cD, learningDialog* ld);
+	ThreadLearningHandTools(learningDialog* ld);
 	void static handle_message(const std::string & message);
 
 	//Start the thread
