@@ -15,7 +15,7 @@ void recordingDialog::pushMessage(QString msg) {
 
 }
 
-void recordingDialog::displayDepthImage(PXCImage* image) {
+void recordingDialog::setDepthImage(PXCImage* image) {
 	if (!image) return;
 
 	PXCImage::ImageData data = {};
@@ -31,23 +31,23 @@ void recordingDialog::displayDepthImage(PXCImage* image) {
 		}
 
 		QImage temp((unsigned char*)data.planes[0], iinfo.width, iinfo.height, QImage::Format_RGB32);
+		//mUIWrite.lock();
 		currentPixmap = QPixmap::fromImage(temp);
-		mUIWrite.lock();
-		ui.label->setPixmap(currentPixmap);
-		mUIWrite.unlock();
+		//ui.label->setPixmap(currentPixmap);
+		//mUIWrite.unlock();
 		image->ReleaseAccess(&data);
 	}
 }
 
-void recordingDialog::displayRecognizedPoints(PXCHandData::IHand *hand) {
+void recordingDialog::setRecognizedPoints(PXCHandData::IHand *hand) {
 	PXCHandData::FingerData fingerData;
 	PXCHandData::JointData nodes[PXCHandData::NUMBER_OF_JOINTS] = {};
 	PXCHandData::ExtremityData extremitiesPointsNodes[PXCHandData::NUMBER_OF_EXTREMITIES] = {};
 
 	PXCHandData::JointData jointData;
 
-	QPixmap pixmap = currentPixmap;
-	QPainter paint(&pixmap);
+	//QPixmap pixmap = currentPixmap.copy();
+	QPainter paint(&currentPixmap);
 	paint.setPen(Qt::blue);
 
 	//Iterate Joints
@@ -75,10 +75,14 @@ void recordingDialog::displayRecognizedPoints(PXCHandData::IHand *hand) {
 		int x = (int)nodes[j].positionImage.x;
 		int y = (int)nodes[j].positionImage.y;
 
+		if (j == 10) {
+			originX = nodes[1].positionImage.x;
+			originY = nodes[1].positionImage.y;
+		}
+
 		paint.drawLine(originX, originY, x, y);
 
 		if (j == 1 || j == 5 || j == 9 || j == 13 || j == 17 || j == 21){
-			//MoveToEx(dc2, wristX, wristY, 0);
 			originX = wristX;
 			originY = wristY;
 		}
@@ -87,15 +91,12 @@ void recordingDialog::displayRecognizedPoints(PXCHandData::IHand *hand) {
 			originY = y;
 		}
 
-		
-		//LineTo(dc2, x, y);
-		//MoveToEx(dc2, x, y, 0);
-
 	}//end for joints
 	paint.end();
-	mUIWrite.lock();
-	//ui.label->setPixmap(pixmap);
-	mUIWrite.unlock();
+}
+
+void recordingDialog::displayDepthImage() {
+	ui.label->setPixmap(currentPixmap);
 }
 
 void recordingDialog::manageThreads(condition_variable *cond_var, bool *program_on_recording) {

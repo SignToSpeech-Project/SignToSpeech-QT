@@ -15,8 +15,9 @@ public:
 	void manageThreads(condition_variable *cond_var, bool *program_on_recording);
 	void setParent(QWidget* p) { parent = p; }
 	void pushMessage(QString msg);
-	void displayDepthImage(PXCImage* image);
-	void displayRecognizedPoints(PXCHandData::IHand *hand);
+	void setDepthImage(PXCImage* image);
+	void setRecognizedPoints(PXCHandData::IHand *hand);
+	void displayDepthImage();
 	Ui::recordingDialog getUi() { return ui; }
 	~recordingDialog();
 
