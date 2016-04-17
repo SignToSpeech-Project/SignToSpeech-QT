@@ -1,10 +1,14 @@
-﻿#pragma once
+﻿	#pragma once
+
+#ifndef LDIALOG_H
+#define LDIALOG_H
 #include <QWidget>
 #include <string>
 #include <iostream>
 #include "ui_learningdialog.h"
 #include "ThreadLearningDictionary.h"
 #include "ThreadLearningHandTools.h"
+#include "recordingdialog.hpp"
 
 using namespace std;
 
@@ -17,6 +21,7 @@ class learningDialog : public QWidget {
 
 public:
 	learningDialog(QWidget * parent = Q_NULLPTR);
+	recordingDialog* getRD() { return rD; }
 	~learningDialog();
 	
 	void setParent(QWidget* p) { parent = p; }
@@ -29,10 +34,10 @@ private slots:
 private:
 	QWidget* parent;
 	Ui::learningDialog ui;
-	void  static threadHandTools(string * s, int * v, bool *program_on, bool *program_on_recording, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_gui, condition_variable *cond_var_dico,recordingDialog* rD);
+	void  static threadHandTools(string * s, int * v, bool *program_on, bool *program_on_recording, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_gui, condition_variable *cond_var_dico, learningDialog * rD);
 	void static threadDico(bool *program_on, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_dico);
 
-	std::thread* tHandTools = new std::thread(threadHandTools, &meaningWord, &nbGestures, &program_on, &program_on_recording, &mBufferW, &bufferWrite, &cond_var_gui,&cond_var_dico, rD);
+	std::thread* tHandTools = new std::thread(threadHandTools, &meaningWord, &nbGestures, &program_on, &program_on_recording, &mBufferW, &bufferWrite, &cond_var_gui, &cond_var_dico, this);
 	std::thread* tDico = new std::thread(threadDico, &program_on, &mBufferW, &bufferWrite, &cond_var_dico);
 
 
@@ -47,3 +52,4 @@ private:
 	string meaningWord;
 	int nbGestures;
 };
+#endif

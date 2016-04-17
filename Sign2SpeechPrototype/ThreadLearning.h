@@ -16,7 +16,7 @@ protected:
 
 
 public:
-	ThreadLearning(mutex *mBW,bool* pg, vector<vector<pair<string, long>>>* bW, condition_variable *cD);
+	ThreadLearning(mutex *mBW, bool* pg, vector<vector<pair<string, long>>>* bW, condition_variable *cD);
 	//virtual void run() = 0; //Start the thread
 	~ThreadLearning();
 };

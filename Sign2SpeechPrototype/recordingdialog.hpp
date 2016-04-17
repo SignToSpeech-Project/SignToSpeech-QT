@@ -14,9 +14,10 @@ public:
 	void setParent(QWidget* p) { parent = p; }
 	void pushMessage(QString msg);
 	void displayDepthImage(PXCImage* image);
+	Ui::recordingDialog getUi() { return ui; }
 	~recordingDialog();
 
-private slots :
+	private slots :
 	void closeEvent(QCloseEvent *event);
 
 private:
