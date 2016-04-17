@@ -4,19 +4,19 @@
 
 #include "ThreadRecognition.h"
 #include "recordingdialog.hpp"
+#include "normaldialog.hpp"
 
-class recognitionDialog;
+class normalDialog;
 
 class ThreadRecognitionDictionary : public ThreadRecognition
 {
 public:
-	ThreadRecognitionDictionary(mutex *mBR, mutex* mSS, bool* pg, bool* br, vector<long>* bR, bool *ss, recognitionDialog* rd, condition_variable *cD);
+	ThreadRecognitionDictionary(normalDialog* rd);
 	void run();
 	~ThreadRecognitionDictionary();
 
 private:
-	recognitionDialog* rD;
-	bool * program_on_room = false; //To prevent unexpected end of roomDialog
+	normalDialog* rD;
 };
 #endif 
 

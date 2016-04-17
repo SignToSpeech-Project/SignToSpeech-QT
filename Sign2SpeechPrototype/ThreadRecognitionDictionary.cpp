@@ -6,10 +6,9 @@
 
 
 
-ThreadRecognitionDictionary::ThreadRecognitionDictionary(mutex *mBR, mutex* mSS, bool* pg, bool* pr, vector<long>* bR, bool *ss, recognitionDialog* rd, condition_variable *cD) : ThreadRecognition(mBR, mSS, pg, bR, ss)
+ThreadRecognitionDictionary::ThreadRecognitionDictionary(normalDialog* rd) : ThreadRecognition(rd->getMBufferR(), rd->getMSymbolSent(), rd->getPG(), rd->getPGR(), rd->getBufferRead(), rd->getSymbolSent(), rd->getCondGui())
 {
 	rD = rd;
-	program_on_room = pr;
 }
 
 void ThreadRecognitionDictionary::run() {
@@ -80,7 +79,6 @@ void ThreadRecognitionDictionary::run() {
 				mBufferR->unlock();
 			}
 		}
-
 		std::mutex m;
 		std::unique_lock<std::mutex> lock(m);
 		cond_var_gui->wait(lock); //Sleep until roomWindows is on
