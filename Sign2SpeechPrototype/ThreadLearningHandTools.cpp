@@ -131,9 +131,9 @@ void ThreadLearningHandTools::run() {
 			std::mutex m;
 			std::unique_lock<std::mutex> lock(m);
 
-			if (!*program_on_recording) {
+			//if (!*program_on_recording ) {
 				cond_var_gui->wait(lock); //Waiting signal from system to start
-			}
+			//}
 
 			if (*program_on && (*program_on_recording)) {
 
@@ -169,7 +169,7 @@ void ThreadLearningHandTools::run() {
 
 					// get and display depth image
 					PXCCapture::Sample *sample = (ct.getSenseManager())->QuerySample();
-					lD->getRD()->displayDepthImage(sample->depth);
+					lD->getRD()->setDepthImage(sample->depth);
 
 					// Get current hand outputs
 					if (g_handDataOutput->Update() == PXC_STATUS_NO_ERROR)
@@ -183,7 +183,7 @@ void ThreadLearningHandTools::run() {
 							handSide = hand->QueryBodySide() == PXCHandData::BODY_SIDE_LEFT ? "Left Hand" : "Right Hand";
 
 							// display in window
-							lD->getRD()->displayRecognizedPoints(hand);
+							lD->getRD()->setRecognizedPoints(hand);
 
 							//LEARNING MODE---------------------------------------------------------------------------------
 							long symbol = h.analyseXGestures(hand);
@@ -223,6 +223,8 @@ void ThreadLearningHandTools::run() {
 
 					} // end if update
 					(ct.getSenseManager())->ReleaseFrame();
+
+					lD->getRD()->displayDepthImage();
 				} // end while acquire frame
 			}
 		}
