@@ -185,7 +185,7 @@ void ThreadLearningHandTools::run() {
 							handSide = hand->QueryBodySide() == PXCHandData::BODY_SIDE_LEFT ? "Left Hand" : "Right Hand";
 
 							// display in window
-							lD->getRD()->setRecognizedPoints(hand);
+							lD->getRD()->setRecognizedPoints(hand, ((i==0)?Qt::blue:Qt::red));
 
 							//LEARNING MODE---------------------------------------------------------------------------------
 							long symbol = h.analyseXGestures(hand);

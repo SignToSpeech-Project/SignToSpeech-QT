@@ -13,12 +13,12 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
-#include <QtWidgets/QGraphicsView>
 #include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -26,45 +26,53 @@ QT_BEGIN_NAMESPACE
 class Ui_roomDialog
 {
 public:
-    QWidget *gridLayoutWidget;
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout;
+    QLabel *label;
     QGridLayout *gridLayout;
-    QLabel *labelRoom;
-    QGraphicsView *graphicsView;
-    QTextBrowser *textBrowser;
     QPushButton *pushButtonLeave;
+    QLabel *labelRoom;
+    QTextBrowser *textBrowser;
 
     void setupUi(QWidget *roomDialog)
     {
         if (roomDialog->objectName().isEmpty())
             roomDialog->setObjectName(QStringLiteral("roomDialog"));
-        roomDialog->resize(400, 300);
-        gridLayoutWidget = new QWidget(roomDialog);
-        gridLayoutWidget->setObjectName(QStringLiteral("gridLayoutWidget"));
-        gridLayoutWidget->setGeometry(QRect(10, 10, 371, 271));
-        gridLayout = new QGridLayout(gridLayoutWidget);
+        roomDialog->resize(658, 733);
+        verticalLayoutWidget = new QWidget(roomDialog);
+        verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(9, 9, 642, 718));
+        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        label = new QLabel(verticalLayoutWidget);
+        label->setObjectName(QStringLiteral("label"));
+        label->setMinimumSize(QSize(640, 480));
+
+        verticalLayout->addWidget(label);
+
+        gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
-        gridLayout->setContentsMargins(11, 11, 11, 11);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        labelRoom = new QLabel(gridLayoutWidget);
+        pushButtonLeave = new QPushButton(verticalLayoutWidget);
+        pushButtonLeave->setObjectName(QStringLiteral("pushButtonLeave"));
+
+        gridLayout->addWidget(pushButtonLeave, 2, 0, 1, 1);
+
+        labelRoom = new QLabel(verticalLayoutWidget);
         labelRoom->setObjectName(QStringLiteral("labelRoom"));
 
         gridLayout->addWidget(labelRoom, 0, 0, 1, 1);
 
-        graphicsView = new QGraphicsView(gridLayoutWidget);
-        graphicsView->setObjectName(QStringLiteral("graphicsView"));
-
-        gridLayout->addWidget(graphicsView, 1, 0, 1, 1);
-
-        textBrowser = new QTextBrowser(gridLayoutWidget);
+        textBrowser = new QTextBrowser(verticalLayoutWidget);
         textBrowser->setObjectName(QStringLiteral("textBrowser"));
 
-        gridLayout->addWidget(textBrowser, 2, 0, 1, 1);
+        gridLayout->addWidget(textBrowser, 1, 0, 1, 1);
 
-        pushButtonLeave = new QPushButton(gridLayoutWidget);
-        pushButtonLeave->setObjectName(QStringLiteral("pushButtonLeave"));
 
-        gridLayout->addWidget(pushButtonLeave, 3, 0, 1, 1);
+        verticalLayout->addLayout(gridLayout);
 
 
         retranslateUi(roomDialog);
@@ -75,6 +83,8 @@ public:
     void retranslateUi(QWidget *roomDialog)
     {
         roomDialog->setWindowTitle(QApplication::translate("roomDialog", "roomDialog", 0));
+        label->setText(QString());
+        pushButtonLeave->setText(QApplication::translate("roomDialog", "Leave", 0));
         labelRoom->setText(QApplication::translate("roomDialog", "TextLabel", 0));
         textBrowser->setHtml(QApplication::translate("roomDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
 "<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
@@ -82,7 +92,6 @@ public:
 "</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">Here are words that will be sent</p>\n"
 "<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
-        pushButtonLeave->setText(QApplication::translate("roomDialog", "Leave", 0));
     } // retranslateUi
 
 };

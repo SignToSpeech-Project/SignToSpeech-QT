@@ -14,8 +14,8 @@ void learningDialog::threadDico( bool *program_on, std::mutex* mBufferW, vector<
 }
 
 	
-void  learningDialog::threadHandTools(learningDialog* rD) {
-	ThreadLearningHandTools t(rD);
+void  learningDialog::threadHandTools(learningDialog* lD) {
+	ThreadLearningHandTools t(lD);
 	t.run();
 }
 

@@ -10,6 +10,7 @@
 #include "pxchandconfiguration.h"
 #include "pxcsensemanager.h"
 #include "ThreadRecognition.h"
+#include "normaldialog.hpp"
 
 using easywsclient::WebSocket;
  
@@ -24,9 +25,10 @@ private:
 
 	string *address;
 	string *room;
+	normalDialog *nD;
 
 public:
-	ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad,string *r, bool *sS, condition_variable *cD);
+	ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad,string *r, bool *sS, condition_variable *cD, normalDialog *nd);
 
 	static WebSocket::pointer webSock;
 

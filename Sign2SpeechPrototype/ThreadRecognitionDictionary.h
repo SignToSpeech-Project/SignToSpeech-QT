@@ -11,12 +11,12 @@ class normalDialog;
 class ThreadRecognitionDictionary : public ThreadRecognition
 {
 public:
-	ThreadRecognitionDictionary(normalDialog* rd);
+	ThreadRecognitionDictionary(normalDialog* nd);
 	void run();
 	~ThreadRecognitionDictionary();
 
 private:
-	normalDialog* rD;
+	normalDialog *nD;
 };
 #endif 
 

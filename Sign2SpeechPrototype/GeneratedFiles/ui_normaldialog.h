@@ -49,7 +49,7 @@ public:
     {
         if (normalDialog->objectName().isEmpty())
             normalDialog->setObjectName(QStringLiteral("normalDialog"));
-        normalDialog->resize(402, 300);
+        normalDialog->resize(414, 300);
         gridLayout_2 = new QGridLayout(normalDialog);
         gridLayout_2->setSpacing(6);
         gridLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -100,28 +100,28 @@ public:
         spinBox_1 = new QSpinBox(normalDialog);
         spinBox_1->setObjectName(QStringLiteral("spinBox_1"));
         spinBox_1->setMaximum(255);
-        spinBox_1->setValue(192);
+        spinBox_1->setValue(52);
 
         horizontalLayout->addWidget(spinBox_1);
 
         spinBox_2 = new QSpinBox(normalDialog);
         spinBox_2->setObjectName(QStringLiteral("spinBox_2"));
         spinBox_2->setMaximum(255);
-        spinBox_2->setValue(168);
+        spinBox_2->setValue(35);
 
         horizontalLayout->addWidget(spinBox_2);
 
         spinBox_3 = new QSpinBox(normalDialog);
         spinBox_3->setObjectName(QStringLiteral("spinBox_3"));
         spinBox_3->setMaximum(255);
-        spinBox_3->setValue(1);
+        spinBox_3->setValue(210);
 
         horizontalLayout->addWidget(spinBox_3);
 
         spinBox_4 = new QSpinBox(normalDialog);
         spinBox_4->setObjectName(QStringLiteral("spinBox_4"));
         spinBox_4->setMaximum(255);
-        spinBox_4->setValue(1);
+        spinBox_4->setValue(217);
 
         horizontalLayout->addWidget(spinBox_4);
 
@@ -148,7 +148,7 @@ public:
         normalDialog->setWindowTitle(QApplication::translate("normalDialog", "normalDialog", 0));
         pushButtonEnter->setText(QApplication::translate("normalDialog", "Enter", 0));
         pushButtonQuit->setText(QApplication::translate("normalDialog", "Quit", 0));
-        lineEditRoom->setText(QApplication::translate("normalDialog", "Test", 0));
+        lineEditRoom->setText(QApplication::translate("normalDialog", "test", 0));
         lineEditUser->setText(QApplication::translate("normalDialog", "Intel", 0));
         label->setText(QApplication::translate("normalDialog", "Room Name", 0));
         label_2->setText(QApplication::translate("normalDialog", "User Name", 0));

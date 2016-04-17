@@ -6,10 +6,11 @@
 
 WebSocket::pointer ThreadRecognitionHandTools::webSock = NULL;
 
-ThreadRecognitionHandTools::ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD) : ThreadRecognition (mBR, mSS, pg, bro,  bR, sS, cD)
+ThreadRecognitionHandTools::ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog *nd) : ThreadRecognition (mBR, mSS, pg, bro,  bR, sS, cD)
 {
 	address = ad;
 	room = r;
+	nD = nd;
 }
 
 
@@ -138,7 +139,11 @@ void ThreadRecognitionHandTools::run() {
 								mSymbolSent->unlock();
 							}
 
-							(ct.getSenseManager())->AcquireFrame(true);
+							//(ct.getSenseManager())->AcquireFrame(true);
+
+							// get and display depth image
+							PXCCapture::Sample *sample = (ct.getSenseManager())->QuerySample();
+							nD->getRD()->setDepthImage(sample->depth);
 
 							// Get current hand outputs
 							if (g_handDataOutput->Update() == PXC_STATUS_NO_ERROR)
@@ -150,6 +155,9 @@ void ThreadRecognitionHandTools::run() {
 									g_handDataOutput->QueryHandData(PXCHandData::ACCESS_ORDER_BY_TIME, i, hand);
 									std::string handSide = "Unknown Hand";
 									handSide = hand->QueryBodySide() == PXCHandData::BODY_SIDE_LEFT ? "Left Hand" : "Right Hand";
+
+									// display in window
+									nD->getRD()->setRecognizedPoints(hand, ((i == 0) ? Qt::blue : Qt::red));
 
 									//RECOGNITION MODE-------------------------------------------------------------------------------
 									long symbol = h.analyseGesture(hand);
@@ -163,6 +171,8 @@ void ThreadRecognitionHandTools::run() {
 
 							} // end if update
 							(ct.getSenseManager())->ReleaseFrame();
+
+							nD->getRD()->displayDepthImage();
 						} // end while acquire frame
 					} // end if Init
 					else {

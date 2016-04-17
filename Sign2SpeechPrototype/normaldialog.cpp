@@ -12,12 +12,12 @@ normalDialog::~normalDialog() {
 
 
 
-void  normalDialog::threadDico(normalDialog * rD) {
-	ThreadRecognitionDictionary d(rD);
+void  normalDialog::threadDico(normalDialog * nD) {
+	ThreadRecognitionDictionary d(nD);
 	d.run();
 }
-void normalDialog::threadHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD) {
-	ThreadRecognitionHandTools t(mBR,mSS,pg,bro,bR,ad,r,sS,cD);
+void normalDialog::threadHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog * nD) {
+	ThreadRecognitionHandTools t(mBR,mSS,pg,bro,bR,ad,r,sS,cD, nD);
 	t.run();
 }
 
@@ -65,4 +65,12 @@ void normalDialog::closeEvent(QCloseEvent *event) //If the user press the "X" cl
 void normalDialog::on_pushButtonQuit_clicked() {
 	this->close();
 
+	/*parent->show();
+	parent->show();
+	program_on = false;
+	cond_var_gui.notify_all();
+	tHandTools->join();
+	tDico->join();
+	free(tHandTools);
+	free(tDico);*/
 }

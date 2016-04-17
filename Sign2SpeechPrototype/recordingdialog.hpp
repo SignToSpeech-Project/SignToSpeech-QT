@@ -16,7 +16,7 @@ public:
 	void setParent(QWidget* p) { parent = p; }
 	void pushMessage(QString msg);
 	void setDepthImage(PXCImage* image);
-	void setRecognizedPoints(PXCHandData::IHand *hand);
+	void setRecognizedPoints(PXCHandData::IHand *hand, QColor color);
 	void displayDepthImage();
 	Ui::recordingDialog getUi() { return ui; }
 	~recordingDialog();
@@ -28,6 +28,7 @@ private:
 	Ui::recordingDialog ui;
 	QWidget* parent;
 	QPixmap currentPixmap;
+	QMatrix reverse;
 	bool *program_on;
 
 	mutex mUIWrite;

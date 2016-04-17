@@ -6,9 +6,9 @@
 
 
 
-ThreadRecognitionDictionary::ThreadRecognitionDictionary(normalDialog* rd) : ThreadRecognition(rd->getMBufferR(), rd->getMSymbolSent(), rd->getPG(), rd->getPGR(), rd->getBufferRead(), rd->getSymbolSent(), rd->getCondGui())
+ThreadRecognitionDictionary::ThreadRecognitionDictionary(normalDialog* nd) : ThreadRecognition(nd->getMBufferR(), nd->getMSymbolSent(), nd->getPG(), nd->getPGR(), nd->getBufferRead(), nd->getSymbolSent(), nd->getCondGui())
 {
-	rD = rd;
+	nD = nd;
 }
 
 void ThreadRecognitionDictionary::run() {

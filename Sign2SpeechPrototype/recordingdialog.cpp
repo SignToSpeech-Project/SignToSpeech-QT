@@ -2,6 +2,9 @@
 
 recordingDialog::recordingDialog(QWidget * parent) : QWidget(parent) {
 	ui.setupUi(this);
+
+	// initialize a matric to reverse the pixmap
+	reverse = reverse.scale(-1, 1);
 }
 
 recordingDialog::~recordingDialog() {
@@ -39,7 +42,7 @@ void recordingDialog::setDepthImage(PXCImage* image) {
 	}
 }
 
-void recordingDialog::setRecognizedPoints(PXCHandData::IHand *hand) {
+void recordingDialog::setRecognizedPoints(PXCHandData::IHand *hand, QColor color) {
 	PXCHandData::FingerData fingerData;
 	PXCHandData::JointData nodes[PXCHandData::NUMBER_OF_JOINTS] = {};
 	PXCHandData::ExtremityData extremitiesPointsNodes[PXCHandData::NUMBER_OF_EXTREMITIES] = {};
@@ -48,7 +51,7 @@ void recordingDialog::setRecognizedPoints(PXCHandData::IHand *hand) {
 
 	//QPixmap pixmap = currentPixmap.copy();
 	QPainter paint(&currentPixmap);
-	paint.setPen(Qt::blue);
+	paint.setPen(QPen(color, 3, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
 
 	//Iterate Joints
 	for (int j = 0; j < PXCHandData::NUMBER_OF_JOINTS; j++)
@@ -92,10 +95,23 @@ void recordingDialog::setRecognizedPoints(PXCHandData::IHand *hand) {
 		}
 
 	}//end for joints
+
+	paint.setPen(QPen(color, 8, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
+	for (int j = 1; j < PXCHandData::NUMBER_OF_JOINTS; ++j)
+	{
+		if (nodes[j].confidence == 0) continue;
+
+		int x = (int)nodes[j].positionImage.x;
+		int y = (int)nodes[j].positionImage.y;
+
+		paint.drawPoint(x, y);
+	}
+
 	paint.end();
 }
 
 void recordingDialog::displayDepthImage() {
+	currentPixmap = currentPixmap.transformed(reverse);
 	ui.label->setPixmap(currentPixmap);
 }
 
