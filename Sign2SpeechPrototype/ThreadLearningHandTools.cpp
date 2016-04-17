@@ -49,6 +49,8 @@ void ThreadLearningHandTools::run() {
 
 		HandTools h;
 
+		Sleep(5000);
+
 		// SDK initialisation 
 		ct.setSession(PXCSession::CreateInstance());
 		if (!(ct.getSession()))
@@ -158,6 +160,10 @@ void ThreadLearningHandTools::run() {
 					// Acquiring frames from input device
 					while ((ct.getSenseManager())->AcquireFrame(true) == PXC_STATUS_NO_ERROR && (*program_on) && (*program_on_recording) && (!saved))
 					{
+						// get and display depth image
+						PXCCapture::Sample *sample = (ct.getSenseManager())->QuerySample();
+						PXCImage* image = (*sample)[PXCCapture::STREAM_TYPE_DEPTH];
+						rD->displayDepthImage(image);
 
 						(ct.getSenseManager())->AcquireFrame(true);
 

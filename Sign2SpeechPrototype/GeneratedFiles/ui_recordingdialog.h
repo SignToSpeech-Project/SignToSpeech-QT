@@ -14,7 +14,10 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QHeaderView>
+#include <QtWidgets/QLabel>
+#include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QTextBrowser>
+#include <QtWidgets/QVBoxLayout>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -22,6 +25,10 @@ QT_BEGIN_NAMESPACE
 class Ui_recordingDialog
 {
 public:
+    QWidget *verticalLayoutWidget;
+    QVBoxLayout *verticalLayout;
+    QLabel *label;
+    QSpacerItem *verticalSpacer;
     QTextBrowser *textBrowser;
 
     void setupUi(QWidget *recordingDialog)
@@ -29,9 +36,28 @@ public:
         if (recordingDialog->objectName().isEmpty())
             recordingDialog->setObjectName(QStringLiteral("recordingDialog"));
         recordingDialog->resize(400, 300);
-        textBrowser = new QTextBrowser(recordingDialog);
+        verticalLayoutWidget = new QWidget(recordingDialog);
+        verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
+        verticalLayoutWidget->setGeometry(QRect(9, 9, 381, 281));
+        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+        verticalLayout->setSpacing(6);
+        verticalLayout->setContentsMargins(11, 11, 11, 11);
+        verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
+        verticalLayout->setContentsMargins(0, 0, 0, 0);
+        label = new QLabel(verticalLayoutWidget);
+        label->setObjectName(QStringLiteral("label"));
+
+        verticalLayout->addWidget(label);
+
+        verticalSpacer = new QSpacerItem(20, 40, QSizePolicy::Minimum, QSizePolicy::Expanding);
+
+        verticalLayout->addItem(verticalSpacer);
+
+        textBrowser = new QTextBrowser(verticalLayoutWidget);
         textBrowser->setObjectName(QStringLiteral("textBrowser"));
-        textBrowser->setGeometry(QRect(0, 0, 401, 301));
+
+        verticalLayout->addWidget(textBrowser);
+
 
         retranslateUi(recordingDialog);
 
@@ -41,11 +67,7 @@ public:
     void retranslateUi(QWidget *recordingDialog)
     {
         recordingDialog->setWindowTitle(QApplication::translate("recordingDialog", "recordingDialog", 0));
-        textBrowser->setHtml(QApplication::translate("recordingDialog", "<!DOCTYPE HTML PUBLIC \"-//W3C//DTD HTML 4.0//EN\" \"http://www.w3.org/TR/REC-html40/strict.dtd\">\n"
-"<html><head><meta name=\"qrichtext\" content=\"1\" /><style type=\"text/css\">\n"
-"p, li { white-space: pre-wrap; }\n"
-"</style></head><body style=\" font-family:'MS Shell Dlg 2'; font-size:8.25pt; font-weight:400; font-style:normal;\">\n"
-"<p style=\"-qt-paragraph-type:empty; margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\"><br /></p></body></html>", 0));
+        label->setText(QString());
     } // retranslateUi
 
 };
