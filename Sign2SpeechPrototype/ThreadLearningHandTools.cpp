@@ -126,14 +126,18 @@ void ThreadLearningHandTools::run() {
 		Debugger::info("\nPXCSenseManager Initializing OK\n========================\n");
 		lD->getRD()->pushMessage("\nPXCSenseManager Initializing OK\n========================\n");
 
+
+		bool saved = false;
+
 		while (*program_on) {
 			std::mutex m;
 			std::unique_lock<std::mutex> lock(m);
 
-			//if (!*program_on_recording ) {
+			if ((!*program_on_recording) || saved) {
 				cond_var_gui->wait(lock); //Waiting signal from system to start
-			//}
+			}
 
+			saved = false;
 			if (*program_on && (*program_on_recording)) {
 
 
@@ -158,7 +162,6 @@ void ThreadLearningHandTools::run() {
 				lD->getRD()->pushMessage("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
 
 
-				bool saved = false;
 
 				// Acquiring frames from input device
 				while ((ct.getSenseManager())->AcquireFrame(true) == PXC_STATUS_NO_ERROR && (*program_on) && (*program_on_recording) && (!saved))
