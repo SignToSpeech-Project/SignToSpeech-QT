@@ -18,7 +18,6 @@ void recordingDialog::pushMessage(QString msg) {
 void recordingDialog::displayDepthImage(PXCImage* image) {
 	if (!image) return;
 
-	//EnterCriticalSection(&cs);
 	PXCImage::ImageData data = {};
 	PXCImage::Rotation rotation = image->QueryRotation();
 	pxcStatus sts = image->AcquireAccess(PXCImage::ACCESS_READ, PXCImage::PIXEL_FORMAT_RGB32, rotation, PXCImage::OPTION_ANY, &data);
@@ -31,27 +30,72 @@ void recordingDialog::displayDepthImage(PXCImage* image) {
 			iinfo.height = w;
 		}
 
-		QImage temp((unsigned char*)data.planes[0], iinfo.width, iinfo.height, QImage::Format_RGB888);
-		QPixmap pixmap = QPixmap::fromImage(temp.rgbSwapped());
-		ui.label->setPixmap(pixmap);
-
-		/*HRESULT hr = E_FAIL;
-		if (this->bitmap) {
-		D2D1_SIZE_U bsize = this->bitmap->GetPixelSize();
-		if (bsize.width == iinfo.width && bsize.height == iinfo.height) {
-		hr = this->bitmap->CopyFromMemory((const D2D1_RECT_U*)&D2D1::RectU(0, 0, iinfo.width, iinfo.height), data.planes[0], data.pitches[0]);
-		if (SUCCEEDED(hr)) UpdatePanel(this->bitmap);
-		}
-		}
-		if (FAILED(hr)) {
-		D2D1_BITMAP_PROPERTIES properties = D2D1::BitmapProperties(D2D1::PixelFormat(DXGI_FORMAT_B8G8R8A8_UNORM, D2D1_ALPHA_MODE_IGNORE));
-		CComPtr<ID2D1Bitmap> bitmap1;
-		HRESULT hr = context2->CreateBitmap(D2D1::SizeU(iinfo.width, iinfo.height), data.planes[0], data.pitches[0], properties, &bitmap1);
-		if (SUCCEEDED(hr)) UpdatePanel(bitmap1);
-		}*/
+		QImage temp((unsigned char*)data.planes[0], iinfo.width, iinfo.height, QImage::Format_RGB32);
+		currentPixmap = QPixmap::fromImage(temp);
+		mUIWrite.lock();
+		ui.label->setPixmap(currentPixmap);
+		mUIWrite.unlock();
 		image->ReleaseAccess(&data);
 	}
-	//LeaveCriticalSection(&cs);
+}
+
+void recordingDialog::displayRecognizedPoints(PXCHandData::IHand *hand) {
+	PXCHandData::FingerData fingerData;
+	PXCHandData::JointData nodes[PXCHandData::NUMBER_OF_JOINTS] = {};
+	PXCHandData::ExtremityData extremitiesPointsNodes[PXCHandData::NUMBER_OF_EXTREMITIES] = {};
+
+	PXCHandData::JointData jointData;
+
+	QPixmap pixmap = currentPixmap;
+	QPainter paint(&pixmap);
+	paint.setPen(Qt::blue);
+
+	//Iterate Joints
+	for (int j = 0; j < PXCHandData::NUMBER_OF_JOINTS; j++)
+	{
+		hand->QueryTrackedJoint((PXCHandData::JointType)j, jointData);
+		nodes[j] = jointData;
+	}
+
+	for (int j = 0; j < PXCHandData::NUMBER_OF_EXTREMITIES; j++)
+	{
+		hand->QueryExtremityPoint((PXCHandData::ExtremityType)j, extremitiesPointsNodes[j]);
+	}
+
+	int wristX = (int)nodes[0].positionImage.x;
+	int wristY = (int)nodes[0].positionImage.y;
+
+	int originX = wristX;
+	int originY = wristY;
+
+	for (int j = 1; j < PXCHandData::NUMBER_OF_JOINTS; ++j)
+	{
+		if (nodes[j].confidence == 0) continue;
+
+		int x = (int)nodes[j].positionImage.x;
+		int y = (int)nodes[j].positionImage.y;
+
+		paint.drawLine(originX, originY, x, y);
+
+		if (j == 1 || j == 5 || j == 9 || j == 13 || j == 17 || j == 21){
+			//MoveToEx(dc2, wristX, wristY, 0);
+			originX = wristX;
+			originY = wristY;
+		}
+		else {
+			originX = x;
+			originY = y;
+		}
+
+		
+		//LineTo(dc2, x, y);
+		//MoveToEx(dc2, x, y, 0);
+
+	}//end for joints
+	paint.end();
+	mUIWrite.lock();
+	//ui.label->setPixmap(pixmap);
+	mUIWrite.unlock();
 }
 
 void recordingDialog::manageThreads(condition_variable *cond_var, bool *program_on_recording) {

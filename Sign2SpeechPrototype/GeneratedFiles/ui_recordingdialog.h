@@ -35,10 +35,10 @@ public:
     {
         if (recordingDialog->objectName().isEmpty())
             recordingDialog->setObjectName(QStringLiteral("recordingDialog"));
-        recordingDialog->resize(400, 300);
+        recordingDialog->resize(660, 580);
         verticalLayoutWidget = new QWidget(recordingDialog);
         verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(9, 9, 381, 281));
+        verticalLayoutWidget->setGeometry(QRect(9, 9, 642, 565));
         verticalLayout = new QVBoxLayout(verticalLayoutWidget);
         verticalLayout->setSpacing(6);
         verticalLayout->setContentsMargins(11, 11, 11, 11);
@@ -46,6 +46,7 @@ public:
         verticalLayout->setContentsMargins(0, 0, 0, 0);
         label = new QLabel(verticalLayoutWidget);
         label->setObjectName(QStringLiteral("label"));
+        label->setMinimumSize(QSize(640, 480));
 
         verticalLayout->addWidget(label);
 

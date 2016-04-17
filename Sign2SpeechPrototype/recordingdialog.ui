@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>400</width>
-    <height>300</height>
+    <width>660</width>
+    <height>580</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -18,13 +18,19 @@
     <rect>
      <x>9</x>
      <y>9</y>
-     <width>381</width>
-     <height>281</height>
+     <width>642</width>
+     <height>565</height>
     </rect>
    </property>
    <layout class="QVBoxLayout" name="verticalLayout">
     <item>
      <widget class="QLabel" name="label">
+      <property name="minimumSize">
+       <size>
+        <width>640</width>
+        <height>480</height>
+       </size>
+      </property>
       <property name="text">
        <string/>
       </property>

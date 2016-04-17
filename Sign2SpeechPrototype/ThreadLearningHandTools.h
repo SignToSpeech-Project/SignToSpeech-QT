@@ -32,10 +32,10 @@ private:
 	condition_variable *cond_var_gui; //To know where the GUI is ready
 	bool * program_on_recording = false; //To prevent unexpected end of recordingDialog
 
-	learningDialog * rD; //Windows to show informations
+	learningDialog * lD; //Windows to show informations
 
 public:
-	ThreadLearningHandTools(mutex *mBW, bool* pg, bool* pgr, vector<vector<pair<string, long>>>* bW, string * s, int * nb, condition_variable *cV, condition_variable *cD, learningDialog* rd);
+	ThreadLearningHandTools(mutex *mBW, bool* pg, bool* pgr, vector<vector<pair<string, long>>>* bW, string * s, int * nb, condition_variable *cV, condition_variable *cD, learningDialog* ld);
 	void static handle_message(const std::string & message);
 
 	//Start the thread
