@@ -9,7 +9,6 @@
 
 
 void learningDialog::threadDico( bool *program_on, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_dico) {
-	cout << "dico" << cond_var_dico << endl;
 	ThreadLearningDictionary d( mBufferW, program_on, bufferWrite, cond_var_dico);
 	d.run();
 }
@@ -23,7 +22,6 @@ void  learningDialog::threadHandTools(learningDialog* rD) {
 
 learningDialog::learningDialog(QWidget * parent) : QWidget(parent) {
 	ui.setupUi(this);
-	cout << " learning" << &cond_var_dico << endl;
 }
 
 learningDialog::~learningDialog() {

@@ -15,7 +15,6 @@ ThreadLearningHandTools::ThreadLearningHandTools(learningDialog* ld) : ThreadLea
 	cond_var_gui = lD->getCondGui();
 	nbGestures = lD->getNbGestures();
 	program_on_recording = ld->getPgr();
-	cout << " thread" << cond_var_dico << endl;
 }
 
 
@@ -50,7 +49,7 @@ void ThreadLearningHandTools::run() {
 	HandTools h;
 
 	// SDK initialisation 
-	/*
+	
 	ct.setSession(PXCSession::CreateInstance());
 	if (!(ct.getSession()))
 	{
@@ -243,7 +242,7 @@ void ThreadLearningHandTools::run() {
 
 	#ifdef _WIN32
 	WSACleanup();
-	#endif*/
+	#endif
 
 }
 
