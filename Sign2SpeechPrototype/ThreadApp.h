@@ -12,10 +12,13 @@ class ThreadApp {
 protected:
 
 	bool* program_on; //To stop the thread
+	condition_variable *cond_var_gui; //To know where the GUI is ready
 
 public :
-	ThreadApp(bool* pg);
+	ThreadApp(bool* pg, condition_variable* cD);
 	
 	//Start the thread
 	virtual void run() = 0 ;
+
+
 };

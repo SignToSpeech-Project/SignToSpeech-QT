@@ -29,7 +29,6 @@ private:
 
 	string * wordMeaning; //Word that will be added
 	int * nbGestures; //Nb Gestures for this word
-	condition_variable *cond_var_gui; //To know where the GUI is ready
 	bool * program_on_recording = false; //To prevent unexpected end of recordingDialog
 
 	learningDialog * rD; //Windows to show informations

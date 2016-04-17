@@ -18,7 +18,7 @@ public:
 
 	//Start the thread
 	//virtual void run() = 0;
-	ThreadRecognition(mutex *mBR, mutex* mSS, bool* pg, vector<long>* bR, bool *ss);
+	ThreadRecognition(mutex *mBR, mutex* mSS, bool* pg, vector<long>* bR, bool *ss, condition_variable *cD);
 	~ThreadRecognition();
 };
 
