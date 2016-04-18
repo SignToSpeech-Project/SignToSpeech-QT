@@ -52,7 +52,7 @@ void learningDialog::on_pushButtonValidation_clicked() {
 		meaningWord = temp.toStdString();
 		nbGestures = ui.spinBoxGestures->value();
 
-		rD = new recordingDialog();
+		rD = new recordingDialog(nbGestures);
 		rD->show();
 		rD->setParent(this);
 		rD->manageThreads(&cond_var_gui,&program_on_recording);

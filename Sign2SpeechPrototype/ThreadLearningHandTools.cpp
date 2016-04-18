@@ -15,6 +15,7 @@ ThreadLearningHandTools::ThreadLearningHandTools(learningDialog* ld) : ThreadLea
 	cond_var_gui = lD->getCondGui();
 	nbGestures = lD->getNbGestures();
 	program_on_recording = ld->getPgr();
+	int i;
 }
 
 
@@ -45,7 +46,7 @@ void ThreadLearningHandTools::run() {
 
 
 	// try to start RealSense SDK
-	
+
 	HandTools h;
 
 	// SDK initialisation 
@@ -190,34 +191,39 @@ void ThreadLearningHandTools::run() {
 							//LEARNING MODE---------------------------------------------------------------------------------
 							long symbol = h.analyseXGestures(hand);
 							if (symbol != -1) {
-								if (!h.getLearning()) {
-									pair<string, long> temp(*wordMeaning, symbol);
-									learningGesture.push_back(temp);
-									mBufferW->lock();
-									bufferWrite->push_back(learningGesture);
-									mBufferW->unlock();
-									cond_var_dico->notify_one();
-									learningGesture.clear();
+							//	if (!lD->getRD()->askValidation()) { //If the user want to do again his gesture
+							//		h.learningMode(*nbGestures + 1 - cpt_Gesture);
+							//	}
+							//	else {
+									if (!h.getLearning()) {
+										pair<string, long> temp(*wordMeaning, symbol);
+										learningGesture.push_back(temp);
+										mBufferW->lock();
+										bufferWrite->push_back(learningGesture);
+										mBufferW->unlock();
+										cond_var_dico->notify_one();
+										learningGesture.clear();
 
-									Debugger::info("------------------------WORD SAVED------------------------");
-									lD->getRD()->pushMessage("------------------------WORD SAVED------------------------");
-									saved = true;
-									Sleep(2000);
-								}
-								else {
-									pair<string, long> temp("", symbol);
-									learningGesture.push_back(temp);
-									cpt_Gesture++;
-									string msg = "------------------------BE READY FOR THE GESTURE NUMERO " + to_string(cpt_Gesture) + " IN 5 SECONDES------------------------";
-									Debugger::info(msg);
-									lD->getRD()->pushMessage(QString::fromStdString(msg));
-									for (int i = 5; i > 0; i--) {
-										Debugger::info(to_string(i));
-										Sleep(1000);
+										Debugger::info("------------------------WORD SAVED------------------------");
+										lD->getRD()->pushMessage("------------------------WORD SAVED------------------------");
+										saved = true;
+										Sleep(2000);
 									}
-									Debugger::info("------------------------Do your gesture NOW during 3 secondes------------------------");
-									lD->getRD()->pushMessage("------------------------Do your gesture NOW during 3 secondes------------------------");
-								}
+									else {
+										pair<string, long> temp("", symbol);
+										learningGesture.push_back(temp);
+										cpt_Gesture++;
+										string msg = "------------------------BE READY FOR THE GESTURE NUMERO " + to_string(cpt_Gesture) + " IN 5 SECONDES------------------------";
+										Debugger::info(msg);
+										lD->getRD()->pushMessage(QString::fromStdString(msg));
+										for (int i = 5; i > 0; i--) {
+											Debugger::info(to_string(i));
+											Sleep(1000);
+										}
+										Debugger::info("------------------------Do your gesture NOW during 3 secondes------------------------");
+										lD->getRD()->pushMessage("------------------------Do your gesture NOW during 3 secondes------------------------");
+									}
+							//	}
 							}
 
 
@@ -246,7 +252,7 @@ void ThreadLearningHandTools::run() {
 	#ifdef _WIN32
 	WSACleanup();
 	#endif
-
+	
 }
 
 ThreadLearningHandTools::~ThreadLearningHandTools()

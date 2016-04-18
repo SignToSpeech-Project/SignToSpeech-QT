@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>reviewDialog</class>
+ <widget class="QWidget" name="reviewDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>400</width>
+    <height>300</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>reviewDialog</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout_2">
+   <item row="3" column="0">
+    <widget class="QPushButton" name="pushButtonContinue">
+     <property name="text">
+      <string>Continue</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="2">
+    <widget class="QLabel" name="label3">
+     <property name="text">
+      <string>Image 3</string>
+     </property>
+    </widget>
+   </item>
+   <item row="2" column="1">
+    <widget class="QLabel" name="label2">
+     <property name="text">
+      <string>Image 2</string>
+     </property>
+    </widget>
+   </item>
+   <item row="3" column="2">
+    <widget class="QPushButton" name="pushButtonDoAgain">
+     <property name="text">
+      <string>Do again</string>
+     </property>
+    </widget>
+   </item>
+   <item row="1" column="1">
+    <layout class="QGridLayout" name="gridLayout_3"/>
+   </item>
+   <item row="1" column="0">
+    <layout class="QGridLayout" name="gridLayout"/>
+   </item>
+   <item row="1" column="2">
+    <layout class="QGridLayout" name="gridLayout_4"/>
+   </item>
+   <item row="2" column="0">
+    <widget class="QLabel" name="label1">
+     <property name="text">
+      <string>Image 1</string>
+     </property>
+    </widget>
+   </item>
+   <item row="0" column="1">
+    <widget class="QLabel" name="label_4">
+     <property name="text">
+      <string>Do you wish to do again your gesture ?</string>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,7 +1,8 @@
 ﻿#include "recordingdialog.hpp"
 
-recordingDialog::recordingDialog(QWidget * parent) : QWidget(parent) {
+recordingDialog::recordingDialog(int nbGesture, QWidget * parent) : QWidget(parent) {
 	ui.setupUi(this);
+	//for (int i = 0; i < nbGesture; i++) t.push_back(new reviewDialog(&answer));
 
 	// initialize a matric to reverse the pixmap
 	reverse = reverse.scale(-1, 1);
@@ -119,6 +120,13 @@ void recordingDialog::manageThreads(condition_variable *cond_var, bool *program_
 	program_on = program_on_recording;
 	*program_on = true;
 	cond_var->notify_one(); //To notify ThreadHandTools that it can start recording
+}
+
+bool recordingDialog::askValidation(int i) {
+
+	bool answer;
+	t[i]->exec();
+	return answer;
 }
 
 void recordingDialog::closeEvent(QCloseEvent *event) {

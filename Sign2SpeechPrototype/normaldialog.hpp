@@ -36,14 +36,6 @@ private:
 	Ui::normalDialog ui;
 	QWidget* parent;
 
-
-	void  static threadDico(normalDialog * nD);
-	void static threadHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog * nD);
-
-	std::thread* tHandTools = new std::thread(threadHandTools, &mBufferR, &mSymbolSent, &program_on, &program_on_room, &bufferRead, &address, &room, &symbolSent, &cond_var_gui, this);
-	std::thread* tDico = new std::thread(threadDico, this);
-
-
 	mutex mBufferR; //Mutex for the Reading buffer
 	mutex mSymbolSent; //Mutex for the boolean SymbolSent 
 	bool symbolSent; //To know if the Dictionnary sent a word on WebRTC
@@ -57,6 +49,14 @@ private:
 	condition_variable cond_var_gui; //To tell to threads when the GUI is ready
 
 	roomDialog * rD;
+
+	void  static threadDico(normalDialog * nD);
+	void static threadHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog * nD);
+
+	std::thread* tHandTools = new std::thread(threadHandTools, &mBufferR, &mSymbolSent, &program_on, &program_on_room, &bufferRead, &address, &room, &symbolSent, &cond_var_gui, this);
+	std::thread* tDico = new std::thread(threadDico, this);
+
+
 
 
 

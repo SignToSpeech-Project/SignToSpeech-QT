@@ -145,7 +145,7 @@ public:
 
     void retranslateUi(QWidget *normalDialog)
     {
-        normalDialog->setWindowTitle(QApplication::translate("normalDialog", "normalDialog", 0));
+        normalDialog->setWindowTitle(QApplication::translate("normalDialog", "Gesture Recognition Mode", 0));
         pushButtonEnter->setText(QApplication::translate("normalDialog", "Enter", 0));
         pushButtonQuit->setText(QApplication::translate("normalDialog", "Quit", 0));
         lineEditRoom->setText(QApplication::translate("normalDialog", "test", 0));

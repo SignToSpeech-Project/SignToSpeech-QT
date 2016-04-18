@@ -82,7 +82,7 @@ public:
 
     void retranslateUi(QWidget *roomDialog)
     {
-        roomDialog->setWindowTitle(QApplication::translate("roomDialog", "roomDialog", 0));
+        roomDialog->setWindowTitle(QApplication::translate("roomDialog", "Chat Room", 0));
         label->setText(QString());
         pushButtonLeave->setText(QApplication::translate("roomDialog", "Leave", 0));
         labelRoom->setText(QApplication::translate("roomDialog", "TextLabel", 0));

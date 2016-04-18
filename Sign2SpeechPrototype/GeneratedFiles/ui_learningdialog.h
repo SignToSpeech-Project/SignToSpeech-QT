@@ -105,7 +105,7 @@ public:
 
     void retranslateUi(QWidget *learningDialog)
     {
-        learningDialog->setWindowTitle(QApplication::translate("learningDialog", "learningDialog", 0));
+        learningDialog->setWindowTitle(QApplication::translate("learningDialog", "Learning Mode", 0));
         labelWord->setText(QApplication::translate("learningDialog", "Meaning of your word", 0));
         label->setText(QApplication::translate("learningDialog", "Number of gestures", 0));
         pushButtonValidation->setText(QApplication::translate("learningDialog", "Validation", 0));

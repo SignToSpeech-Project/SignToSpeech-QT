@@ -41,15 +41,6 @@ private slots:
 	void closeEvent(QCloseEvent *event);
 
 private:
-	QWidget* parent;
-	Ui::learningDialog ui;
-	void  static threadHandTools(learningDialog * rD);
-	void static threadDico(bool *program_on, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_dico);
-
-	std::thread* tHandTools = new std::thread(threadHandTools, this);
-	std::thread* tDico = new std::thread(threadDico, &program_on, &mBufferW, &bufferWrite, &cond_var_dico);
-
-
 	//Items for threads
 	bool program_on = true; //to stop threads
 	bool program_on_recording = false; //To know when the recording dialog is running
@@ -60,5 +51,16 @@ private:
 	recordingDialog* rD; //Windows to show informations
 	string meaningWord;
 	int nbGestures;
+
+	QWidget* parent;
+	Ui::learningDialog ui;
+	void  static threadHandTools(learningDialog * rD);
+	void static threadDico(bool *program_on, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_dico);
+
+	std::thread* tHandTools = new std::thread(threadHandTools, this);
+	std::thread* tDico = new std::thread(threadDico, &program_on, &mBufferW, &bufferWrite, &cond_var_dico);
+
+
+
 };
 #endif

@@ -67,7 +67,7 @@ public:
 
     void retranslateUi(QWidget *recordingDialog)
     {
-        recordingDialog->setWindowTitle(QApplication::translate("recordingDialog", "recordingDialog", 0));
+        recordingDialog->setWindowTitle(QApplication::translate("recordingDialog", "Gestures Windows", 0));
         label->setText(QString());
     } // retranslateUi
 

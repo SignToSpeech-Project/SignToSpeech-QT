@@ -7,6 +7,11 @@ Sign2SpeechPrototype::Sign2SpeechPrototype(QWidget *parent)
 	: QMainWindow(parent)
 {
 	ui.setupUi(this);
+
+	QPixmap pixRecognition("sign.png");
+	QPixmap pixIntel("intel.png");
+	ui.labelRecognition->setPixmap(pixRecognition);
+	ui.labelIntel->setPixmap(pixIntel);
 }
 
 Sign2SpeechPrototype::~Sign2SpeechPrototype()
