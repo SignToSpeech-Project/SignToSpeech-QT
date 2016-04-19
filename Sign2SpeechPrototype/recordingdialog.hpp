@@ -6,6 +6,7 @@
 #include "pxcimage.h"
 #include "pxchanddata.h"
 #include "qpainter.h"
+#include "qscrollbar.h"
 #include "reviewdialog.hpp"
 
 using namespace std;

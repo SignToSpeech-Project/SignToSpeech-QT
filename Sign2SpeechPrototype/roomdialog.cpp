@@ -9,6 +9,12 @@ roomDialog::roomDialog(QWidget * parent) : QWidget(parent) {
 	reverse = reverse.scale(-1, 1);
 }
 
+void roomDialog::pushMessage(QString msg) {
+	ui.textBrowser->append(msg);
+	QScrollBar *sb = ui.textBrowser->verticalScrollBar();
+	sb->setValue(sb->maximum());
+}
+
 void roomDialog::setDepthImage(PXCImage* image) {
 	if (!image) return;
 

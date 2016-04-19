@@ -55,7 +55,6 @@ void ThreadLearningHandTools::run() {
 	if (!(ct.getSession()))
 	{
 		Debugger::error("Failed Creating PXCSession");
-		lD->getRD()->pushMessage("Failed Creating PXCSession");
 		return;
 	}
 
@@ -64,7 +63,6 @@ void ThreadLearningHandTools::run() {
 	{
 		ct.releaseAll();
 		Debugger::error("Failed Creating PXCSenseManager");
-		lD->getRD()->pushMessage("Failed Creating PXCSenseManager");
 		return;
 	}
 
@@ -74,7 +72,6 @@ void ThreadLearningHandTools::run() {
 	{
 		ct.releaseAll();
 		Debugger::error("Failed Enabling Hand Module");
-		lD->getRD()->pushMessage("Failed Creating Hand Module");
 		return;
 	}
 
@@ -83,7 +80,6 @@ void ThreadLearningHandTools::run() {
 	{
 		ct.releaseAll();
 		Debugger::error("Failed Creating PXCHandModule");
-		lD->getRD()->pushMessage("Failed Creating PXCHandModule");
 		return;
 	}
 
@@ -92,7 +88,6 @@ void ThreadLearningHandTools::run() {
 	{
 		ct.releaseAll();
 		Debugger::error("Failed Creating PXCHandData");
-		lD->getRD()->pushMessage("Failed Creating PXCHandData");
 		return;
 	}
 
@@ -101,7 +96,6 @@ void ThreadLearningHandTools::run() {
 	{
 		ct.releaseAll();
 		Debugger::error("Failed Creating PXCHandConfiguration");
-		lD->getRD()->pushMessage("Failed Creating PXCHandConfiguration");
 		return;
 	}
 
@@ -125,7 +119,6 @@ void ThreadLearningHandTools::run() {
 	if ((ct.getSenseManager())->Init() == PXC_STATUS_NO_ERROR)
 	{
 		Debugger::info("\nPXCSenseManager Initializing OK\n========================\n");
-		lD->getRD()->pushMessage("\nPXCSenseManager Initializing OK\n========================\n");
 
 
 		bool saved = false;
@@ -241,7 +234,6 @@ void ThreadLearningHandTools::run() {
 	{
 		ct.releaseAll();
 		Debugger::error("Failed Initializing PXCSenseManager");
-		lD->getRD()->pushMessage("Failed Initializing PXCSenseManager");
 		return;
 	}
 

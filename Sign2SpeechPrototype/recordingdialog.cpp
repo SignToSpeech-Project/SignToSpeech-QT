@@ -13,10 +13,9 @@ recordingDialog::~recordingDialog() {
 }
 
 void recordingDialog::pushMessage(QString msg) {
-	/*if (ui.textBrowser != NULL) {
 	ui.textBrowser->append(msg);
-	}*/
-
+	QScrollBar *sb = ui.textBrowser->verticalScrollBar();
+	sb->setValue(sb->maximum());
 }
 
 void recordingDialog::setDepthImage(PXCImage* image) {

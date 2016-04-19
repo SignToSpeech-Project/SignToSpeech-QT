@@ -4,6 +4,7 @@
 #include "pxcimage.h"
 #include "pxchanddata.h"
 #include "qpainter.h"
+#include "qscrollbar.h"
 #include <mutex>
 using namespace std;
 
@@ -15,6 +16,7 @@ public:
 	~roomDialog();
 	void setInfo(QString s) { info = s; ui.labelRoom->setText(info); }
 	void setParent(QWidget* p) { parent = p; }
+	void pushMessage(QString msg);
 	void setDepthImage(PXCImage* image);
 	void setRecognizedPoints(PXCHandData::IHand *hand, QColor color);
 	void displayDepthImage();
