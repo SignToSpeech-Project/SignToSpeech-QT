@@ -15,7 +15,7 @@
 #ifndef DEF_HT
 #define DEF_HT
 
-#define MAXFRAME 59
+#define MAXFRAME 100
 #define DEBUG true
 
 // Trajectory error thresholds
@@ -56,6 +56,7 @@ private :
 	SYSTEMTIME gestureStart;
 
 	// Variables for trajectory recognition
+	PXCPoint3DF32 currentMassCenters[10];
 	PXCPoint3DF32 massCenterCoordinates[1000];
 	vector<uint8_t> trajectories;
 
@@ -110,12 +111,12 @@ public :
 	// Analyse the movement of the gesture (straight or elliptic) from all the points that compose the gesture
 	// Param: nbFrame is the number of captured frames
 	// Returns 8 bits encoding the trajectory
-	uint8_t analyseMovement(int nbFrame);
+	uint8_t analyseMovement(PXCPoint3DF32 massCenter[1000], int nbFrame);
 
 	// Checks if the movement is static
 	// Params: out will contain the bits encoding the trajectory, nbFrame is the number of captured frames
 	// Returns true if static
-	bool isStatic(uint8_t *out, int nbFrame);
+	bool isStatic(PXCPoint3DF32 massCenter[1000], int nbFrame, uint8_t *out);
 
 	// Checks if the movement is horizontal
 	// Params: p0 is the first captured point, pf is the last one, pm is the middle one
@@ -136,7 +137,7 @@ public :
 	// Params: p0 is the first captured point, pf is the last one, pm is the middle one, out will contain the bits encoding the trajector,
 	// nbFrame is the number of captured frames
 	// Returns true if elliptic
-	bool isElliptic(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf, uint8_t *out, int nbFrame);
+	bool isElliptic(PXCPoint3DF32 massCenter[1000], PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf, uint8_t *out, int nbFrame);
 
 	/***********************************************/
 	/* ***************** Learning **************** */

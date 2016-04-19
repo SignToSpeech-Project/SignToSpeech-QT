@@ -191,6 +191,7 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 	}
 
 	bool writeAllowed = true;
+	bool doAverage = false;
 
 	if (*nbFrame == 0) {
 		GetSystemTime(&gestureStart);
@@ -208,22 +209,26 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 		}
 
 		// check if the previous set of frames is not too different from the new frame 
-		// each 5 frames
-		if ((*nbFrame) % 5 == 0 && (*nbFrame) != 0) {
+		// each 10 frames
+		if ((*nbFrame) % 20 == 0 && (*nbFrame) != 0) {
 			uint32_t avgTmp = calculateAverage(handData, *nbReadFrame);
-			if (calculateHammingDistance(avgTmp, handToInt(hand), 10, 2) >= 3) {
-				if (*nbReadFrame < (MAXFRAME / 3)) {
-					// remove all the previous gesture
-					Debugger::debug("Remove the previous gesture");
-					*nbReadFrame = 0;
-					*nbFrame = 0;
-				}
-				else if (*nbReadFrame > 2*(MAXFRAME / 3)) {
+			if (calculateHammingDistance(avgTmp, handToInt(hand), 10, 2) >= 3 || analyseMovement(massCenterCoordinates, *nbReadFrame) != analyseMovement(currentMassCenters, 19) ) {
+				//if (*nbReadFrame < (MAXFRAME / 3)) {
+				//	// remove all the previous gesture
+				//	Debugger::debug("Remove the previous gesture");
+				//	*nbReadFrame = 0;
+				//	*nbFrame = 0;
+				//}
+				//else if (*nbReadFrame > 2*(MAXFRAME / 3)) {
 					// we only keep the previous gesture
+
+				if (*nbReadFrame > 40) {
 					Debugger::debug("Only keep the previous gesture");
 					writeAllowed = false;
+					doAverage = true;
 					(*nbFrame)++;
 				}
+				//}
 			}
 		}
 
@@ -237,13 +242,17 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 			}
 			// add the coordinates of the mass center into the table
 			massCenterCoordinates[*nbReadFrame] = hand->QueryMassCenterWorld();
+			currentMassCenters[(*nbReadFrame)%10] = hand->QueryMassCenterWorld();
 			(*nbReadFrame)++;
 		}
 		(*nbFrame)++;
 	}
-	else {
+	if(*nbFrame >= MAXFRAME || doAverage) {
+
+		Debugger::debug("\t\t\tDo Average");
+
 		uint32_t average = calculateAverage(handData, min(MAXFRAME, *nbReadFrame));
-		uint8_t movement = analyseMovement(min(MAXFRAME, *nbReadFrame));
+		uint8_t movement = analyseMovement(massCenterCoordinates, min(MAXFRAME, *nbReadFrame));
 		average |= movement << 10;
 
 		printf("[%ld]\t", frameCounter);
@@ -262,41 +271,41 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 /* *************** Trajectories ************** */
 /***********************************************/
 
-uint8_t HandTools::analyseMovement(int nbFrame) {
+uint8_t HandTools::analyseMovement(PXCPoint3DF32 massCenter[1000], int nbFrame) {
 
 	// coordinates of the first point of the movement
-	PXCPoint3DF32 p0 = massCenterCoordinates[0];
+	PXCPoint3DF32 p0 = massCenter[0];
 
 	// coordinates of the middle point of the movement
-	PXCPoint3DF32 pm = massCenterCoordinates[(int)(nbFrame/2)];
+	PXCPoint3DF32 pm = massCenter[(int)(nbFrame/2)];
 
 	// coordinates of the last point of the movement
-	PXCPoint3DF32 pf = massCenterCoordinates[nbFrame - 1];
+	PXCPoint3DF32 pf = massCenter[nbFrame - 1];
 
 	uint8_t temp = 0b0 ;
 
-	if (isStatic(&temp, nbFrame)) {
+	if (isStatic(massCenter, nbFrame, &temp)) {
 		return temp;
 	}
 	else if (isStraight(p0, pm, pf, &temp)) {
 		// do things with temp and symb
 		return temp;
 	}
-	else if (isElliptic(p0, pm, pf, &temp, nbFrame)) {
+	else if (isElliptic(massCenter, p0, pm, pf, &temp, nbFrame)) {
 		// do things with temp and symb
 		return temp;
 	}
 	return 0;
 }
 
-bool HandTools::isStatic(uint8_t *out, int nbFrame) {
+bool HandTools::isStatic(PXCPoint3DF32 massCenter[1000], int nbFrame, uint8_t *out) {
 	int i;
 	int cpt = 0;
-	PXCPoint3DF32 p0 = massCenterCoordinates[0];
+	PXCPoint3DF32 p0 = massCenter[0];
 	PXCPoint3DF32 p_current;
 
 	for (i = 1; i < nbFrame; i++) {
-		p_current = massCenterCoordinates[i];
+		p_current = massCenter[i];
 		if ((abs(p0.x - p_current.x) <= NBMETERS_STATIC) && (abs(p0.y - p_current.y) <= NBMETERS_STATIC)) {
 			cpt++;
 		}
@@ -419,7 +428,7 @@ bool HandTools::isStraight(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf,
 	}
 }
 
-bool HandTools::isElliptic(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf, uint8_t *out, int nbFrame) {
+bool HandTools::isElliptic(PXCPoint3DF32 massCenter[1000], PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf, uint8_t *out, int nbFrame) {
 	// center coordinates pc(xc, yc)
 	PXCPoint3DF32 pc;
 
@@ -434,7 +443,7 @@ bool HandTools::isElliptic(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf,
 		float b = sqrt(pow(pm.x - pc.x, 2) + pow(pm.y - pc.y, 2));
 
 		// chose 1 point, different from p0, pm and pf, to see if it respects the ellipse eq
-		PXCPoint3DF32 p1 = massCenterCoordinates[(int)(nbFrame / 3)];
+		PXCPoint3DF32 p1 = massCenter[(int)(nbFrame / 3)];
 		if ((abs(pow(p1.x - pc.x, 2) / (a*a) + pow(p1.y - pc.y, 2) / (b*b)) - 1) <= ERR_ELLIPSE) {
 			printf("NOT FULL ELLIPSE\n");
 			*out |= (0b1 << 7);
@@ -455,14 +464,14 @@ bool HandTools::isElliptic(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf,
 		float a = sqrt(pow(pf.x - pc.x, 2) + pow(pf.x - pc.y, 2));
 		
 		// pm2 is the point at the first quarter of the point list (the middle of the first half of the list)
-		PXCPoint3DF32 pm2 = massCenterCoordinates[(int)(nbFrame / 4)];
+		PXCPoint3DF32 pm2 = massCenter[(int)(nbFrame / 4)];
 
 		// b is the distance between pm2(pm2.x, pm2.y) and pc(pc.x, pc.y)
 		float b = sqrt(pow(pm2.x - pc.x, 2) + pow(pm2.y - pc.y, 2));
 
 		// chose 2 points, different from p0, pm, pm2 and pf, to see if they respect the ellipse eq
-		PXCPoint3DF32 p1 = massCenterCoordinates[(int)(nbFrame / 3)];
-		PXCPoint3DF32 p2 = massCenterCoordinates[(int)(2*nbFrame / 3)];
+		PXCPoint3DF32 p1 = massCenter[(int)(nbFrame / 3)];
+		PXCPoint3DF32 p2 = massCenter[(int)(2*nbFrame / 3)];
 		if ( ((abs(pow(p1.x - pc.x, 2) / (a*a) + pow(p1.y - pc.y, 2) / (b*b)) - 1) < ERR_ELLIPSE)
 		&& ((abs(pow(p2.x - pc.x, 2) / (a*a) + pow(p2.y - pc.y, 2) / (b*b)) - 1) < ERR_ELLIPSE) ) {
 			printf("FULL ELLIPSE\n");
@@ -502,7 +511,7 @@ long HandTools::analyseXGestures(PXCHandData::IHand* hand) {
 
 
 	if (difftime(time(0), start) >= 3.0) {
-		trajectories.push_back(analyseMovement(nbMassCenter));
+		trajectories.push_back(analyseMovement(massCenterCoordinates, nbMassCenter));
 		nbGesture++;
 		firstFrame = 0;
 		nbMassCenter = 0;

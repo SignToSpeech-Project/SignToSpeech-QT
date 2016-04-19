@@ -16,5 +16,19 @@
 			"word": "mercredi",
 			"gesture": "0x00000155"
 		}
+	],
+	"Etats-Unis": [
+		{
+			"word": "",
+			"gesture": "0x00000000"
+		},
+		{
+			"word": "",
+			"gesture": "0x00000800"
+		},
+		{
+			"word": "Etats-Unis",
+			"gesture": "0x000003ff"
+		}
 	]
 }
