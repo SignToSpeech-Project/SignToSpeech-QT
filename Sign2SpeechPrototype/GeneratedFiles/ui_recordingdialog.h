@@ -13,8 +13,10 @@
 #include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
+#include <QtWidgets/QGridLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
+#include <QtWidgets/QPushButton>
 #include <QtWidgets/QSpacerItem>
 #include <QtWidgets/QTextBrowser>
 #include <QtWidgets/QVBoxLayout>
@@ -25,26 +27,26 @@ QT_BEGIN_NAMESPACE
 class Ui_recordingDialog
 {
 public:
-    QWidget *verticalLayoutWidget;
+    QGridLayout *gridLayout;
     QVBoxLayout *verticalLayout;
     QLabel *label;
     QSpacerItem *verticalSpacer;
     QTextBrowser *textBrowser;
+    QPushButton *pushButtonLeave;
 
     void setupUi(QWidget *recordingDialog)
     {
         if (recordingDialog->objectName().isEmpty())
             recordingDialog->setObjectName(QStringLiteral("recordingDialog"));
         recordingDialog->resize(660, 580);
-        verticalLayoutWidget = new QWidget(recordingDialog);
-        verticalLayoutWidget->setObjectName(QStringLiteral("verticalLayoutWidget"));
-        verticalLayoutWidget->setGeometry(QRect(9, 9, 642, 565));
-        verticalLayout = new QVBoxLayout(verticalLayoutWidget);
+        gridLayout = new QGridLayout(recordingDialog);
+        gridLayout->setSpacing(6);
+        gridLayout->setContentsMargins(11, 11, 11, 11);
+        gridLayout->setObjectName(QStringLiteral("gridLayout"));
+        verticalLayout = new QVBoxLayout();
         verticalLayout->setSpacing(6);
-        verticalLayout->setContentsMargins(11, 11, 11, 11);
         verticalLayout->setObjectName(QStringLiteral("verticalLayout"));
-        verticalLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(verticalLayoutWidget);
+        label = new QLabel(recordingDialog);
         label->setObjectName(QStringLiteral("label"));
         label->setMinimumSize(QSize(640, 480));
 
@@ -54,10 +56,18 @@ public:
 
         verticalLayout->addItem(verticalSpacer);
 
-        textBrowser = new QTextBrowser(verticalLayoutWidget);
+        textBrowser = new QTextBrowser(recordingDialog);
         textBrowser->setObjectName(QStringLiteral("textBrowser"));
 
         verticalLayout->addWidget(textBrowser);
+
+
+        gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
+
+        pushButtonLeave = new QPushButton(recordingDialog);
+        pushButtonLeave->setObjectName(QStringLiteral("pushButtonLeave"));
+
+        gridLayout->addWidget(pushButtonLeave, 1, 0, 1, 1);
 
 
         retranslateUi(recordingDialog);
@@ -69,6 +79,7 @@ public:
     {
         recordingDialog->setWindowTitle(QApplication::translate("recordingDialog", "Gestures Windows", 0));
         label->setText(QString());
+        pushButtonLeave->setText(QApplication::translate("recordingDialog", "Leave", 0));
     } // retranslateUi
 
 };

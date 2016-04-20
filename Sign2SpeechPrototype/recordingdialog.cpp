@@ -128,6 +128,10 @@ bool recordingDialog::askValidation(int i) {
 	return answer;
 }
 
+void recordingDialog::on_pushButtonLeave_clicked() {
+	this->close();
+}
+
 void recordingDialog::closeEvent(QCloseEvent *event) {
 	*program_on = false;
 	parent->show();

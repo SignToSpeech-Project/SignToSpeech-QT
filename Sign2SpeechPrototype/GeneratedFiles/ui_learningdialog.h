@@ -28,13 +28,12 @@ QT_BEGIN_NAMESPACE
 class Ui_learningDialog
 {
 public:
-    QWidget *gridLayoutWidget;
+    QGridLayout *gridLayout_2;
     QGridLayout *gridLayout;
-    QLabel *labelWord;
-    QLabel *label;
-    QLineEdit *lineEditWord;
     QSpinBox *spinBoxGestures;
-    QWidget *horizontalLayoutWidget;
+    QLabel *labelWord;
+    QLineEdit *lineEditWord;
+    QLabel *label;
     QHBoxLayout *horizontalLayout;
     QPushButton *pushButtonValidation;
     QSpacerItem *horizontalSpacer;
@@ -45,45 +44,42 @@ public:
         if (learningDialog->objectName().isEmpty())
             learningDialog->setObjectName(QStringLiteral("learningDialog"));
         learningDialog->resize(400, 300);
-        gridLayoutWidget = new QWidget(learningDialog);
-        gridLayoutWidget->setObjectName(QStringLiteral("gridLayoutWidget"));
-        gridLayoutWidget->setGeometry(QRect(10, 10, 381, 191));
-        gridLayout = new QGridLayout(gridLayoutWidget);
+        gridLayout_2 = new QGridLayout(learningDialog);
+        gridLayout_2->setSpacing(6);
+        gridLayout_2->setContentsMargins(11, 11, 11, 11);
+        gridLayout_2->setObjectName(QStringLiteral("gridLayout_2"));
+        gridLayout = new QGridLayout();
         gridLayout->setSpacing(6);
-        gridLayout->setContentsMargins(11, 11, 11, 11);
         gridLayout->setObjectName(QStringLiteral("gridLayout"));
-        gridLayout->setContentsMargins(0, 0, 0, 0);
-        labelWord = new QLabel(gridLayoutWidget);
-        labelWord->setObjectName(QStringLiteral("labelWord"));
-
-        gridLayout->addWidget(labelWord, 0, 1, 1, 1);
-
-        label = new QLabel(gridLayoutWidget);
-        label->setObjectName(QStringLiteral("label"));
-
-        gridLayout->addWidget(label, 1, 1, 1, 1);
-
-        lineEditWord = new QLineEdit(gridLayoutWidget);
-        lineEditWord->setObjectName(QStringLiteral("lineEditWord"));
-
-        gridLayout->addWidget(lineEditWord, 0, 0, 1, 1);
-
-        spinBoxGestures = new QSpinBox(gridLayoutWidget);
+        spinBoxGestures = new QSpinBox(learningDialog);
         spinBoxGestures->setObjectName(QStringLiteral("spinBoxGestures"));
         spinBoxGestures->setMinimum(1);
         spinBoxGestures->setValue(1);
 
         gridLayout->addWidget(spinBoxGestures, 1, 0, 1, 1);
 
-        horizontalLayoutWidget = new QWidget(learningDialog);
-        horizontalLayoutWidget->setObjectName(QStringLiteral("horizontalLayoutWidget"));
-        horizontalLayoutWidget->setGeometry(QRect(10, 220, 371, 71));
-        horizontalLayout = new QHBoxLayout(horizontalLayoutWidget);
+        labelWord = new QLabel(learningDialog);
+        labelWord->setObjectName(QStringLiteral("labelWord"));
+
+        gridLayout->addWidget(labelWord, 0, 1, 1, 1);
+
+        lineEditWord = new QLineEdit(learningDialog);
+        lineEditWord->setObjectName(QStringLiteral("lineEditWord"));
+
+        gridLayout->addWidget(lineEditWord, 0, 0, 1, 1);
+
+        label = new QLabel(learningDialog);
+        label->setObjectName(QStringLiteral("label"));
+
+        gridLayout->addWidget(label, 1, 1, 1, 1);
+
+
+        gridLayout_2->addLayout(gridLayout, 0, 0, 1, 1);
+
+        horizontalLayout = new QHBoxLayout();
         horizontalLayout->setSpacing(6);
-        horizontalLayout->setContentsMargins(11, 11, 11, 11);
         horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
-        horizontalLayout->setContentsMargins(0, 0, 0, 0);
-        pushButtonValidation = new QPushButton(horizontalLayoutWidget);
+        pushButtonValidation = new QPushButton(learningDialog);
         pushButtonValidation->setObjectName(QStringLiteral("pushButtonValidation"));
 
         horizontalLayout->addWidget(pushButtonValidation);
@@ -92,10 +88,13 @@ public:
 
         horizontalLayout->addItem(horizontalSpacer);
 
-        pushButtonQuit = new QPushButton(horizontalLayoutWidget);
+        pushButtonQuit = new QPushButton(learningDialog);
         pushButtonQuit->setObjectName(QStringLiteral("pushButtonQuit"));
 
         horizontalLayout->addWidget(pushButtonQuit);
+
+
+        gridLayout_2->addLayout(horizontalLayout, 1, 0, 1, 1);
 
 
         retranslateUi(learningDialog);

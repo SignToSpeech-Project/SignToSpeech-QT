@@ -6,13 +6,18 @@
 
 WebSocket::pointer ThreadRecognitionHandTools::webSock = NULL;
 
-ThreadRecognitionHandTools::ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog *nd) : ThreadRecognition (mBR, mSS, pg, bro,  bR, sS, cD)
+ThreadRecognitionHandTools::ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, mutex * mPM, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog *nd) : ThreadRecognition (mBR, mSS,mPM, pg, bro,  bR, sS, cD)
 {
 	address = ad;
 	room = r;
 	nD = nd;
 }
 
+void ThreadRecognitionHandTools::pushMessage(string msg) {
+	mPushMessage->lock();
+	if (*program_on_room) nD->getRD()->pushMessage(QString::fromStdString(msg));
+	mPushMessage->unlock();
+}
 
 /** Display incoming message from the subtitling channel **/
 void ThreadRecognitionHandTools::handle_message(const std::string & message) {

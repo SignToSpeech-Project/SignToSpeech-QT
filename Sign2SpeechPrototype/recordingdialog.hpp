@@ -26,7 +26,8 @@ public:
 	Ui::recordingDialog getUi() { return ui; }
 	~recordingDialog();
 
-	private slots :
+	private slots:
+	void on_pushButtonLeave_clicked();
 	void closeEvent(QCloseEvent *event);
 
 private:

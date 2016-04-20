@@ -12,6 +12,7 @@ class ThreadRecognitionDictionary : public ThreadRecognition
 {
 public:
 	ThreadRecognitionDictionary(normalDialog* nd);
+	void pushMessage(string msg);
 	void run();
 	~ThreadRecognitionDictionary();
 

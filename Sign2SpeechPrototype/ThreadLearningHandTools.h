@@ -38,6 +38,7 @@ private:
 public:
 	ThreadLearningHandTools(learningDialog* ld);
 	void static handle_message(const std::string & message);
+	void pushMessage(string msg);
 
 	//Start the thread
 	void run();

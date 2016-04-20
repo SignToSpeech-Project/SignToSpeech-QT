@@ -212,8 +212,6 @@
     <ClCompile Include="roomdialog.cpp" />
     <ClCompile Include="sign2speechprototype.cpp" />
     <ClCompile Include="ThreadApp.cpp" />
-    <ClCompile Include="ThreadDictionary.cpp" />
-    <ClCompile Include="ThreadHandTools.cpp" />
     <ClCompile Include="ThreadLearning.cpp" />
     <ClCompile Include="ThreadLearningDictionary.cpp" />
     <ClCompile Include="ThreadLearningHandTools.cpp" />
@@ -296,8 +294,6 @@
     </CustomBuild>
     <ClInclude Include="targetver.h" />
     <ClInclude Include="ThreadApp.h" />
-    <ClInclude Include="ThreadDictionary.h" />
-    <ClInclude Include="ThreadHandTools.h" />
     <ClInclude Include="ThreadLearning.h" />
     <ClInclude Include="ThreadLearningDictionary.h" />
     <ClInclude Include="ThreadLearningHandTools.h" />

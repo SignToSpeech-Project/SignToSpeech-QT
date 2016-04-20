@@ -110,12 +110,6 @@
     <ClCompile Include="ThreadApp.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadDictionary.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="ThreadHandTools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="wingetopt.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -229,12 +223,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreadApp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadDictionary.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadHandTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="wingetopt.h">

@@ -2,7 +2,6 @@
 #include <windows.h>
 #include <winsock.h>
 #include <sstream>
-#include "ThreadHandTools.h"
 #include "Debugger.h"
 #include "HandTools.h"
 
@@ -26,28 +25,18 @@ void ThreadLearningHandTools::handle_message(const std::string & message) {
 	Debugger::debug(out.str());
 }
 
+void ThreadLearningHandTools::pushMessage(string msg) {
+	if(*program_on_recording) lD->getRD()->pushMessage(QString::fromStdString(msg));
+}
+
 
 void ThreadLearningHandTools::run() {
 
 	ConsoleTools ct;
 
-	// open a WebSocket channel with the negotiation server
-	// we don't need this for learning
-	/*#ifdef _WIN32
-	INT rc;
-	WSADATA wsaData;
-
-	rc = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (rc) {
-	printf("WSAStartup Failed.\n");
-	return;
-	}
-	#endif*/
-
-
 	// try to start RealSense SDK
 
-	HandTools h;
+	HandTools h(this);
 
 	// SDK initialisation 
 	
@@ -147,13 +136,13 @@ void ThreadLearningHandTools::run() {
 				h.learningMode(*nbGestures);
 
 				Debugger::info("Learning mode is starting in 5 secondes, be ready !");
-				lD->getRD()->pushMessage("Learning mode is starting in 5 secondes, be ready !");
+				pushMessage("Learning mode is starting in 5 secondes, be ready !");
 				for (int i = 5; i > 0; i--) {
 					Debugger::info(to_string(i));
 					Sleep(1000);
 				}
 				Debugger::info("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
-				lD->getRD()->pushMessage("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
+				pushMessage("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
 
 
 
@@ -198,7 +187,7 @@ void ThreadLearningHandTools::run() {
 										learningGesture.clear();
 
 										Debugger::info("------------------------WORD SAVED------------------------");
-										lD->getRD()->pushMessage("------------------------WORD SAVED------------------------");
+										pushMessage("------------------------WORD SAVED------------------------");
 										saved = true;
 										Sleep(2000);
 									}
@@ -208,13 +197,13 @@ void ThreadLearningHandTools::run() {
 										cpt_Gesture++;
 										string msg = "------------------------BE READY FOR THE GESTURE NUMERO " + to_string(cpt_Gesture) + " IN 5 SECONDES------------------------";
 										Debugger::info(msg);
-										lD->getRD()->pushMessage(QString::fromStdString(msg));
+										pushMessage(msg);
 										for (int i = 5; i > 0; i--) {
 											Debugger::info(to_string(i));
 											Sleep(1000);
 										}
 										Debugger::info("------------------------Do your gesture NOW during 3 secondes------------------------");
-										lD->getRD()->pushMessage("------------------------Do your gesture NOW during 3 secondes------------------------");
+										pushMessage("------------------------Do your gesture NOW during 3 secondes------------------------");
 									}
 							//	}
 							}
