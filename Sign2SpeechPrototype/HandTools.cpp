@@ -210,9 +210,18 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 
 		// check if the previous set of frames is not too different from the new frame 
 		// each 10 frames
-		if ((*nbFrame) % 20 == 0 && (*nbFrame) != 0) {
+		if ((*nbFrame) % 10 == 0 && (*nbFrame) != 0) {
 			uint32_t avgTmp = calculateAverage(handData, *nbReadFrame);
-			if (calculateHammingDistance(avgTmp, handToInt(hand), 10, 2) >= 3 || analyseMovement(massCenterCoordinates, *nbReadFrame) != analyseMovement(currentMassCenters, 19) ) {
+			if (analyseMovement(massCenterCoordinates, *nbReadFrame) != analyseMovement(currentMassCenters, 9)) {
+				if (*nbReadFrame > 40) {
+					Debugger::debug("\t Gestures are differents - Only keep the previous gesture");
+					writeAllowed = false;
+					doAverage = true;
+					(*nbReadFrame) -= 10;
+					//(*nbFrame)++;
+				}
+			}
+			if (writeAllowed && calculateHammingDistance(avgTmp, handToInt(hand), 10, 2) >= 3) {
 				//if (*nbReadFrame < (MAXFRAME / 3)) {
 				//	// remove all the previous gesture
 				//	Debugger::debug("Remove the previous gesture");
@@ -226,7 +235,7 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 					Debugger::debug("Only keep the previous gesture");
 					writeAllowed = false;
 					doAverage = true;
-					(*nbFrame)++;
+					//(*nbFrame)++;
 				}
 				//}
 			}
@@ -249,7 +258,7 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 	}
 	if(*nbFrame >= MAXFRAME || doAverage) {
 
-		Debugger::debug("\t\t\tDo Average");
+		Debugger::info("\t\t\tDo Average");
 
 		uint32_t average = calculateAverage(handData, min(MAXFRAME, *nbReadFrame));
 		uint8_t movement = analyseMovement(massCenterCoordinates, min(MAXFRAME, *nbReadFrame));
@@ -300,7 +309,7 @@ uint8_t HandTools::analyseMovement(PXCPoint3DF32 massCenter[1000], int nbFrame) 
 
 bool HandTools::isStatic(PXCPoint3DF32 massCenter[1000], int nbFrame, uint8_t *out) {
 	int i;
-	int cpt = 0;
+	int cpt = 1;
 	PXCPoint3DF32 p0 = massCenter[0];
 	PXCPoint3DF32 p_current;
 
@@ -312,9 +321,8 @@ bool HandTools::isStatic(PXCPoint3DF32 massCenter[1000], int nbFrame, uint8_t *o
 		p0 = p_current;
 	}
 	//cout << cpt << endl;
-	if (cpt > (float)nbFrame*0.92) {
-		cout << "STATIQUE" << endl;
-		//printf("STATIQUE\n");
+	if (cpt > ((float)nbFrame)*0.92) {
+		Debugger::debug("STATIQUE");
 		return true;
 	}
 	else {
@@ -323,16 +331,16 @@ bool HandTools::isStatic(PXCPoint3DF32 massCenter[1000], int nbFrame, uint8_t *o
 }
 
 bool HandTools::isHorizontal(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf) {
-	if ((abs(p0.x - pf.x) > VALID_HOR) && (abs(p0.y - pf.y) <= ERR_VERT)) {
-		cout << "STRAIGHT HORIZONTAL" << endl;
+	if (/*(abs(p0.x - pf.x) > VALID_HOR) && */(abs(p0.y - pf.y) <= ERR_VERT)) {
+		Debugger::debug("STRAIGHT HORIZONTAL");
 		return true;
 	}
 	return false;
 }
 
 bool HandTools::isVertical(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf) {
-	if ((abs(p0.y - pf.y) > VALID_VER) && (abs(p0.x - pf.x) <= ERR_HOR)) {
-		cout << "STRAIGHT VERTICAL" << endl;
+	if (/*(abs(p0.y - pf.y) > VALID_VER) && */(abs(p0.x - pf.x) <= ERR_HOR)) {
+		Debugger::debug("STRAIGHT VERTICAL");
 		return true;
 	}
 	return false;
@@ -353,34 +361,34 @@ bool HandTools::isStraight(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf,
 	if (abs(pm.y - (a*pm.x + b)) < ERR_STRAIGHT_HOR && isHorizontal(p0, pm, pf)) {
 		// which direction: left or right?
 		if (p0.x - pf.x > 0) {
-			printf("\tRIGHT\n");
+			Debugger::debug("\tRIGHT");
 			*out |= 0b1;
-			printBinary(*out, 7);
-			printf("\n");
+			/*printBinary(*out, 7);
+			printf("\n");*/
 			return true;
 		}
 		else {
-			printf("\tLEFT\n");
+			Debugger::debug("\tLEFT");
 			*out |= (0b1 << 1);
-			printBinary(*out, 7);
-			printf("\n");
+			/*printBinary(*out, 7);
+			printf("\n");*/
 			return true;
 		}
 	}
 	else if (abs(pm.y - (a*pm.x + b)) < ERR_STRAIGHT_VER && isVertical(p0, pm, pf)) {
 		// which direction: top or bottom?
 		if (p0.y - pf.y > 0) {
-			printf("\tBOTTOM\n");
+			Debugger::debug("\tBOTTOM");
 			*out |= (0b1 << 3);
-			printBinary(*out, 7);
-			printf("\n");
+			/*printBinary(*out, 7);
+			printf("\n");*/
 			return true;
 		}
 		else {
-			printf("\tTOP\n");
+			Debugger::debug("\tTOP");
 			*out |= (0b1 << 2);
-			printBinary(*out, 7);
-			printf("\n");
+			/*printBinary(*out, 7);
+			printf("\n");*/
 			return true;
 		}
 	}
@@ -390,17 +398,17 @@ bool HandTools::isStraight(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf,
 		if (p0.y < pf.y) {
 			*out |= (0b1 << 2);
 			if (p0.x - pf.x > 0) {
-				printf("\tNORMAL TOP RIGHT\n");
+				Debugger::debug("\tNORMAL TOP RIGHT");
 				*out |= 0b1;
-				printBinary(*out, 7);
-				printf("\n");
+				/*printBinary(*out, 7);
+				printf("\n");*/
 				return true;
 			}
 			else {
-				printf("\tNORMAL TOP LEFT\n");
+				Debugger::debug("\tNORMAL TOP LEFT");
 				*out |= (0b1 << 1);
-				printBinary(*out, 7);
-				printf("\n");
+				/*printBinary(*out, 7);
+				printf("\n");*/
 				return true;
 			}
 		}
@@ -408,17 +416,17 @@ bool HandTools::isStraight(PXCPoint3DF32 p0, PXCPoint3DF32 pm, PXCPoint3DF32 pf,
 		else if (p0.y > pf.y) {
 			*out |= (0b1 << 3);
 			if (p0.x - pf.x > 0) {
-				printf("\tNORMAL BOTTOM RIGHT\n");
+				Debugger::debug("\tNORMAL BOTTOM RIGHT");
 				*out |= 0b1;
-				printBinary(*out, 7);
-				printf("\n");
+				/*printBinary(*out, 7);
+				printf("\n");*/
 				return true;
 			}
 			else {
-				printf("\tNORMAL BOTTOM LEFT\n");
+				Debugger::debug("\tNORMAL BOTTOM LEFT");
 				*out |= (0b1 << 1);
-				printBinary(*out, 7);
-				printf("\n");
+				/*printBinary(*out, 7);
+				printf("\n");*/
 				return true;
 			}
 		}
@@ -445,7 +453,7 @@ bool HandTools::isElliptic(PXCPoint3DF32 massCenter[1000], PXCPoint3DF32 p0, PXC
 		// chose 1 point, different from p0, pm and pf, to see if it respects the ellipse eq
 		PXCPoint3DF32 p1 = massCenter[(int)(nbFrame / 3)];
 		if ((abs(pow(p1.x - pc.x, 2) / (a*a) + pow(p1.y - pc.y, 2) / (b*b)) - 1) <= ERR_ELLIPSE) {
-			printf("NOT FULL ELLIPSE\n");
+			Debugger::debug("NOT FULL ELLIPSE");
 			*out |= (0b1 << 7);
 			return true;
 		}
@@ -474,7 +482,7 @@ bool HandTools::isElliptic(PXCPoint3DF32 massCenter[1000], PXCPoint3DF32 p0, PXC
 		PXCPoint3DF32 p2 = massCenter[(int)(2*nbFrame / 3)];
 		if ( ((abs(pow(p1.x - pc.x, 2) / (a*a) + pow(p1.y - pc.y, 2) / (b*b)) - 1) < ERR_ELLIPSE)
 		&& ((abs(pow(p2.x - pc.x, 2) / (a*a) + pow(p2.y - pc.y, 2) / (b*b)) - 1) < ERR_ELLIPSE) ) {
-			printf("FULL ELLIPSE\n");
+			Debugger::debug("FULL ELLIPSE");
 			*out |= (0b1 << 6);
 			return true;
 		}

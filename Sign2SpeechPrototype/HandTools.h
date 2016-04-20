@@ -15,7 +15,7 @@
 #ifndef DEF_HT
 #define DEF_HT
 
-#define MAXFRAME 100
+#define MAXFRAME 200
 #define DEBUG true
 
 // Trajectory error thresholds
@@ -56,7 +56,7 @@ private :
 	SYSTEMTIME gestureStart;
 
 	// Variables for trajectory recognition
-	PXCPoint3DF32 currentMassCenters[10];
+	PXCPoint3DF32 currentMassCenters[1000];
 	PXCPoint3DF32 massCenterCoordinates[1000];
 	vector<uint8_t> trajectories;
 

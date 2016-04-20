@@ -30,5 +30,51 @@
 			"word": "Etats-Unis",
 			"gesture": "0x000003ff"
 		}
+	],
+	"wesh": [
+		{
+			"word": "",
+			"gesture": "0x00000208"
+		},
+		{
+			"word": "",
+			"gesture": "0x00000105"
+		},
+		{
+			"word": "wesh",
+			"gesture": "0x00000003"
+		}
+	],
+	"Bonjour": [
+		{
+			"word": "Bonjour",
+			"gesture": "0x000017fe"
+		}
+	],
+	"WeshNoguerron": [
+		{
+			"word": "",
+			"gesture": "0x000003fd"
+		},
+		{
+			"word": "WeshNoguerron",
+			"gesture": "0x000000aa"
+		}
+	],
+	"noguerron": [
+		{
+			"word": "",
+			"gesture": "0x000003fd"
+		},
+		{
+			"word": "noguerron",
+			"gesture": "0x000003f6"
+		}
+	],
+	"Au revoir": [
+		{
+			"word": "Au revoir",
+			"gesture": "0x00000001"
+		}
 	]
 }

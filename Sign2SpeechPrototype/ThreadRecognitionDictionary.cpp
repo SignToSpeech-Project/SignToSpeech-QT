@@ -64,7 +64,7 @@ void ThreadRecognitionDictionary::run() {
 			std:stringstream out;
 				out << "Reading : " << (*it) << " Signification : " << currentSymbol << endl;
 				Debugger::debug(out.str());
-				nD->getRD()->pushMessage(QString::fromStdString(out.str()));
+				//nD->getRD()->pushMessage(QString::fromStdString(out.str()));
 				if ((currentSymbol.find("0x0 : Not final word") == std::string::npos) && (currentSymbol != "0x1 : root") && (currentSymbol != "")) {
 					Debugger::info("Sending: " + currentSymbol);
 					nD->getRD()->pushMessage(QString::fromStdString("Sending: " + currentSymbol));

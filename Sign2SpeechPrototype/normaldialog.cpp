@@ -63,14 +63,5 @@ void normalDialog::closeEvent(QCloseEvent *event) //If the user press the "X" cl
 }
 
 void normalDialog::on_pushButtonQuit_clicked() {
-	this->close();
-
-	/*parent->show();
-	parent->show();
-	program_on = false;
-	cond_var_gui.notify_all();
-	tHandTools->join();
-	tDico->join();
-	free(tHandTools);
-	free(tDico);*/
+	this->close();	
 }
