@@ -116,9 +116,6 @@
     <ClCompile Include="ThreadLearning.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="ThreadLearningHandTools.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="ThreadLearningDictionary.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -138,6 +135,15 @@
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="GeneratedFiles\Release\moc_reviewdialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="threadlearninghandtools.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Debug\moc_threadlearninghandtools.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="GeneratedFiles\Release\moc_threadlearninghandtools.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
   </ItemGroup>
@@ -180,6 +186,12 @@
     </CustomBuild>
     <CustomBuild Include="reviewdialog.ui">
       <Filter>Form Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="ThreadRecognitionHandTools.h">
+      <Filter>Header Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="threadlearninghandtools.hpp">
+      <Filter>Header Files</Filter>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
@@ -231,16 +243,10 @@
     <ClInclude Include="ThreadLearning.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="ThreadLearningHandTools.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="ThreadLearningDictionary.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreadRecognition.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="ThreadRecognitionHandTools.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThreadRecognitionDictionary.h">

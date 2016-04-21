@@ -22,22 +22,26 @@ public:
 	void setDepthImage(PXCImage* image);
 	void setRecognizedPoints(PXCHandData::IHand *hand, QColor color);
 	void displayDepthImage();
-	bool askValidation(int i);
+	void askValidation(int i);
+	bool getAnswer() { return answer; }
+	void setAnswer(bool a) { answer = a; }
 	Ui::recordingDialog getUi() { return ui; }
 	~recordingDialog();
 
 	private slots:
-	void on_pushButtonLeave_clicked();
+	void on_pushButtonDoAgain_clicked();
+	void on_pushButtonContinue_clicked();
 	void closeEvent(QCloseEvent *event);
 
 private:
 	Ui::recordingDialog ui;
-	bool answer;
+	bool answer = NULL;
 	QWidget* parent;
 	QPixmap currentPixmap;
 	QMatrix reverse;
 	bool *program_on;
 	vector < reviewDialog* > t;
+	condition_variable * conditionVar;
 
 	mutex mUIWrite;
 };

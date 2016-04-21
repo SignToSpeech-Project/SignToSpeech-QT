@@ -1,7 +1,7 @@
-#pragma once
+﻿#pragma once
 #ifndef THL_H
 #define THL_H
-
+#include <qthread.h>
 #include "ThreadApp.h"
 #include "ConsoleTools.h"
 #include "pxchanddata.h"
@@ -17,9 +17,9 @@
 
 class learningDialog;
 
-class ThreadLearningHandTools : public ThreadLearning
+class ThreadLearningHandTools : public QThread, public ThreadLearning
 {
-
+	Q_OBJECT
 private:
 	PXCHandModule *g_handModule;
 	PXCHandData *g_handDataOutput;
@@ -39,10 +39,13 @@ public:
 	ThreadLearningHandTools(learningDialog* ld);
 	void static handle_message(const std::string & message);
 	void pushMessage(string msg);
-
-	//Start the thread
-	void run();
-;
 	~ThreadLearningHandTools();
+
+protected:
+	virtual void run();
+
+signals:
+	void signalGUI(int);
+
 };
 #endif 

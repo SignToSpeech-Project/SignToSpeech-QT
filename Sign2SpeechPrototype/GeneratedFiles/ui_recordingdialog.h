@@ -14,6 +14,7 @@
 #include <QtWidgets/QApplication>
 #include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QGridLayout>
+#include <QtWidgets/QHBoxLayout>
 #include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QPushButton>
@@ -32,13 +33,15 @@ public:
     QLabel *label;
     QSpacerItem *verticalSpacer;
     QTextBrowser *textBrowser;
-    QPushButton *pushButtonLeave;
+    QHBoxLayout *horizontalLayout;
+    QPushButton *pushButtonContinue;
+    QPushButton *pushButtonDoAgain;
 
     void setupUi(QWidget *recordingDialog)
     {
         if (recordingDialog->objectName().isEmpty())
             recordingDialog->setObjectName(QStringLiteral("recordingDialog"));
-        recordingDialog->resize(660, 580);
+        recordingDialog->resize(660, 612);
         gridLayout = new QGridLayout(recordingDialog);
         gridLayout->setSpacing(6);
         gridLayout->setContentsMargins(11, 11, 11, 11);
@@ -61,13 +64,24 @@ public:
 
         verticalLayout->addWidget(textBrowser);
 
+        horizontalLayout = new QHBoxLayout();
+        horizontalLayout->setSpacing(6);
+        horizontalLayout->setObjectName(QStringLiteral("horizontalLayout"));
+        pushButtonContinue = new QPushButton(recordingDialog);
+        pushButtonContinue->setObjectName(QStringLiteral("pushButtonContinue"));
+
+        horizontalLayout->addWidget(pushButtonContinue);
+
+        pushButtonDoAgain = new QPushButton(recordingDialog);
+        pushButtonDoAgain->setObjectName(QStringLiteral("pushButtonDoAgain"));
+
+        horizontalLayout->addWidget(pushButtonDoAgain);
+
+
+        verticalLayout->addLayout(horizontalLayout);
+
 
         gridLayout->addLayout(verticalLayout, 0, 0, 1, 1);
-
-        pushButtonLeave = new QPushButton(recordingDialog);
-        pushButtonLeave->setObjectName(QStringLiteral("pushButtonLeave"));
-
-        gridLayout->addWidget(pushButtonLeave, 1, 0, 1, 1);
 
 
         retranslateUi(recordingDialog);
@@ -79,7 +93,8 @@ public:
     {
         recordingDialog->setWindowTitle(QApplication::translate("recordingDialog", "Gestures Windows", 0));
         label->setText(QString());
-        pushButtonLeave->setText(QApplication::translate("recordingDialog", "Leave", 0));
+        pushButtonContinue->setText(QApplication::translate("recordingDialog", "PushButton", 0));
+        pushButtonDoAgain->setText(QApplication::translate("recordingDialog", "PushButton", 0));
     } // retranslateUi
 
 };

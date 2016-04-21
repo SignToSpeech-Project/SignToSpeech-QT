@@ -11,7 +11,7 @@
 #include "pxchanddata.h"
 #include "pxchandconfiguration.h"
 #include "pxcsensemanager.h"
-#include "ThreadLearningHandTools.h"
+#include "ThreadLearningHandTools.hpp"
 
 #ifndef DEF_HT
 #define DEF_HT

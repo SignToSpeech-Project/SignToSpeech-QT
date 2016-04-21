@@ -13,17 +13,21 @@ void learningDialog::threadDico( bool *program_on, std::mutex* mBufferW, vector<
 	d.run();
 }
 
-	
-void  learningDialog::threadHandTools(learningDialog* lD) {
-	ThreadLearningHandTools t(lD);
-	t.run();
+void learningDialog::setButtons(int i) {
+	if (i == -2) {
+		ui.pushButtonValidation->setEnabled(false);
+	}
+	else {
+		if (program_on_recording) rD->askValidation(i);
+	}
 }
-
-
 learningDialog::learningDialog(QWidget * parent) : QWidget(parent) {
 	ui.setupUi(this);
+	tHandTools= new ThreadLearningHandTools(this);
+	tHandTools->start();
+	QObject::connect(tHandTools, SIGNAL(signalGUI(const int&)), this, SLOT(setButtons(const int&)));
 }
-
+	
 learningDialog::~learningDialog() {
 	
 }
@@ -35,7 +39,7 @@ void learningDialog::closeEvent(QCloseEvent *event) //If the user press the "X" 
 	program_on = false;
 	cond_var_gui.notify_all();
 	cond_var_dico.notify_all();
-	tHandTools->join();
+	tHandTools->wait();
 	tDico->join();
 	free(tHandTools);
 	free(tDico);
