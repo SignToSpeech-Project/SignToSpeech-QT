@@ -224,7 +224,7 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 					//(*nbFrame)++;
 				}
 			}
-			if (writeAllowed && calculateHammingDistance(avgTmp, handToInt(hand), 10, 2) >= 3) {
+			if (writeAllowed && calculateHammingDistance(avgTmp, handToInt(hand), 10, 2) >= 4) {
 				//if (*nbReadFrame < (MAXFRAME / 3)) {
 				//	// remove all the previous gesture
 				//	Debugger::debug("Remove the previous gesture");
@@ -261,7 +261,7 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 	}
 	if(*nbFrame >= MAXFRAME || doAverage) {
 
-		tLHT->pushMessage("\t\t\tDo Average");
+		Debugger::info("\t\t\tDo Average");
 
 		uint32_t average = calculateAverage(handData, min(MAXFRAME, *nbReadFrame));
 		uint8_t movement = analyseMovement(massCenterCoordinates, min(MAXFRAME, *nbReadFrame));

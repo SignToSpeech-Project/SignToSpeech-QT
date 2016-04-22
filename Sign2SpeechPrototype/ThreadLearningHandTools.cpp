@@ -139,6 +139,7 @@ void ThreadLearningHandTools::run() {
 				pushMessage("Learning mode is starting in 5 secondes, be ready !");
 				for (int i = 5; i > 0; i--) {
 					Debugger::info(to_string(i));
+					pushMessage(to_string(i));
 					Sleep(1000);
 				}
 				Debugger::info("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
@@ -206,6 +207,7 @@ void ThreadLearningHandTools::run() {
 											pushMessage(msg);
 											for (int i = 5; i > 0; i--) {
 												Debugger::info(to_string(i));
+												pushMessage(to_string(i));
 												Sleep(1000);
 											}
 											Debugger::info("------------------------Do your gesture NOW during 3 secondes------------------------");
