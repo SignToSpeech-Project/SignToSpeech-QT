@@ -16,8 +16,8 @@ void  normalDialog::threadDico(normalDialog * nD) {
 	ThreadRecognitionDictionary d(nD);
 	d.run();
 }
-void normalDialog::threadHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog * nD) {
-	ThreadRecognitionHandTools t(mBR,mSS,pg,bro,bR,ad,r,sS,cD, nD);
+void normalDialog::threadHandTools(mutex *mBR, mutex *mSS,mutex *mPM, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog * nD) {
+	ThreadRecognitionHandTools t(mBR,mSS,mPM,pg,bro,bR,ad,r,sS,cD, nD);
 	t.run();
 }
 

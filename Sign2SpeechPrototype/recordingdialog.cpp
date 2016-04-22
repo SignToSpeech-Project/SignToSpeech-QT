@@ -6,6 +6,10 @@ recordingDialog::recordingDialog(int nbGesture, QWidget * parent) : QWidget(pare
 
 	// initialize a matric to reverse the pixmap
 	reverse = reverse.scale(-1, 1);
+	ui.pushButtonContinue->setVisible(false);
+	ui.pushButtonDoAgain->setVisible(false);
+	ui.pushButtonContinue->setText("Continue");
+	ui.pushButtonDoAgain->setText("Do it again");
 }
 
 recordingDialog::~recordingDialog() {
@@ -118,14 +122,40 @@ void recordingDialog::displayDepthImage() {
 void recordingDialog::manageThreads(condition_variable *cond_var, bool *program_on_recording) {
 	program_on = program_on_recording;
 	*program_on = true;
+	conditionVar = cond_var;
 	cond_var->notify_one(); //To notify ThreadHandTools that it can start recording
 }
 
-bool recordingDialog::askValidation(int i) {
+void recordingDialog::askValidation(int i) {
+	if (i == -1) {
+		ui.pushButtonDoAgain->setText("Leave");
+		ui.pushButtonDoAgain->setVisible(true);
+	}
+	else {
+		QString msg = "attend "+  QString::number(i);
+		pushMessage(msg);
+		ui.pushButtonContinue->setVisible(true);
+		ui.pushButtonDoAgain->setVisible(true);
+	}
+}
 
-	bool answer;
-	t[i]->exec();
-	return answer;
+void recordingDialog::on_pushButtonDoAgain_clicked() {
+	if (ui.pushButtonDoAgain->text() == "Leave") {
+		this->close();
+	}
+	else {
+		ui.pushButtonContinue->setVisible(false);
+		ui.pushButtonDoAgain->setVisible(false);
+		answer = false;
+		conditionVar->notify_one();
+	}
+}
+
+void recordingDialog::on_pushButtonContinue_clicked() {
+	ui.pushButtonContinue->setVisible(false);
+	ui.pushButtonDoAgain->setVisible(false);
+	answer = true;
+	conditionVar->notify_one();
 }
 
 void recordingDialog::closeEvent(QCloseEvent *event) {

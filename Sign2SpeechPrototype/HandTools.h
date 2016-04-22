@@ -11,6 +11,7 @@
 #include "pxchanddata.h"
 #include "pxchandconfiguration.h"
 #include "pxcsensemanager.h"
+#include "ThreadLearningHandTools.hpp"
 
 #ifndef DEF_HT
 #define DEF_HT
@@ -32,7 +33,7 @@
 
 using namespace std;
 using std::cout;
-
+class ThreadLearningHandTools;
 class HandTools {
 
 private :
@@ -68,6 +69,7 @@ private :
 	int nbMassCenter = 0;
 	int currentGestComposee = 0;
 	int nbMotCompose;
+	ThreadLearningHandTools * tLHT;
 
 public :
 
@@ -152,6 +154,8 @@ public :
 	// Param : vector of trajectories (uint_8) to compute the average on
 	// Returns the computed average trajectory
 	uint8_t averageTrajectory(vector<uint8_t> trajectories);
+
+	HandTools(ThreadLearningHandTools * h = NULL);
 };
 
 

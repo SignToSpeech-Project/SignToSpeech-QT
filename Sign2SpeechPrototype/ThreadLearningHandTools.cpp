@@ -1,8 +1,7 @@
-#include "ThreadLearningHandTools.h"
+﻿#include "ThreadLearningHandTools.hpp"
 #include <windows.h>
 #include <winsock.h>
 #include <sstream>
-#include "ThreadHandTools.h"
 #include "Debugger.h"
 #include "HandTools.h"
 
@@ -26,31 +25,21 @@ void ThreadLearningHandTools::handle_message(const std::string & message) {
 	Debugger::debug(out.str());
 }
 
+void ThreadLearningHandTools::pushMessage(string msg) {
+	if (*program_on_recording) lD->getRD()->pushMessage(QString::fromStdString(msg));
+}
+
 
 void ThreadLearningHandTools::run() {
 
 	ConsoleTools ct;
 
-	// open a WebSocket channel with the negotiation server
-	// we don't need this for learning
-	/*#ifdef _WIN32
-	INT rc;
-	WSADATA wsaData;
-
-	rc = WSAStartup(MAKEWORD(2, 2), &wsaData);
-	if (rc) {
-	printf("WSAStartup Failed.\n");
-	return;
-	}
-	#endif*/
-
-
 	// try to start RealSense SDK
 
-	HandTools h;
+	HandTools h(this);
 
-	// SDK initialisation 
-	
+	// SDK initialisation
+
 	ct.setSession(PXCSession::CreateInstance());
 	if (!(ct.getSession()))
 	{
@@ -111,7 +100,7 @@ void ThreadLearningHandTools::run() {
 		g_handConfiguration->Release();
 		g_handConfiguration = NULL;
 	}
-	// End of initialisation 
+	// End of initialisation
 
 	pxcI32 numOfHands = 0;
 
@@ -147,13 +136,13 @@ void ThreadLearningHandTools::run() {
 				h.learningMode(*nbGestures);
 
 				Debugger::info("Learning mode is starting in 5 secondes, be ready !");
-				lD->getRD()->pushMessage("Learning mode is starting in 5 secondes, be ready !");
+				pushMessage("Learning mode is starting in 5 secondes, be ready !");
 				for (int i = 5; i > 0; i--) {
 					Debugger::info(to_string(i));
 					Sleep(1000);
 				}
 				Debugger::info("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
-				lD->getRD()->pushMessage("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
+				pushMessage("------------------------PLEASE, DO YOUR FIRST GESTURE DURING 3 SECONDES------------------------");
 
 
 
@@ -179,44 +168,52 @@ void ThreadLearningHandTools::run() {
 							handSide = hand->QueryBodySide() == PXCHandData::BODY_SIDE_LEFT ? "Left Hand" : "Right Hand";
 
 							// display in window
-							lD->getRD()->setRecognizedPoints(hand, ((i==0)?Qt::blue:Qt::red));
+							lD->getRD()->setRecognizedPoints(hand, ((i == 0) ? Qt::blue : Qt::red));
 
 							//LEARNING MODE---------------------------------------------------------------------------------
 							long symbol = h.analyseXGestures(hand);
 							if (symbol != -1) {
-							//	if (!lD->getRD()->askValidation()) { //If the user want to do again his gesture
-							//		h.learningMode(*nbGestures + 1 - cpt_Gesture);
-							//	}
-							//	else {
-									if (!h.getLearning()) {
-										pair<string, long> temp(*wordMeaning, symbol);
-										learningGesture.push_back(temp);
-										mBufferW->lock();
-										bufferWrite->push_back(learningGesture);
-										mBufferW->unlock();
-										cond_var_dico->notify_one();
-										learningGesture.clear();
-
-										Debugger::info("------------------------WORD SAVED------------------------");
-										lD->getRD()->pushMessage("------------------------WORD SAVED------------------------");
-										saved = true;
-										Sleep(2000);
+								emit signalGUI(cpt_Gesture); //Asking user if he want to continue
+								if (lD->getRD()->getAnswer() == NULL) {
+									cond_var_gui->wait(lock);
+								}
+								if (*program_on_recording) {
+									bool answer = lD->getRD()->getAnswer();
+									if (!answer) {  //If the user want to do again his gesture
+										h.learningMode(*nbGestures + 1 - cpt_Gesture);
 									}
 									else {
-										pair<string, long> temp("", symbol);
-										learningGesture.push_back(temp);
-										cpt_Gesture++;
-										string msg = "------------------------BE READY FOR THE GESTURE NUMERO " + to_string(cpt_Gesture) + " IN 5 SECONDES------------------------";
-										Debugger::info(msg);
-										lD->getRD()->pushMessage(QString::fromStdString(msg));
-										for (int i = 5; i > 0; i--) {
-											Debugger::info(to_string(i));
-											Sleep(1000);
+										if (!h.getLearning()) {
+											pair<string, long> temp(*wordMeaning, symbol);
+											learningGesture.push_back(temp);
+											mBufferW->lock();
+											bufferWrite->push_back(learningGesture);
+											mBufferW->unlock();
+											cond_var_dico->notify_one();
+											learningGesture.clear();
+
+											Debugger::info("------------------------WORD SAVED------------------------");
+											pushMessage("------------------------WORD SAVED------------------------");
+											saved = true;
+											emit signalGUI(-1); //Signaling GUI word is saved
 										}
-										Debugger::info("------------------------Do your gesture NOW during 3 secondes------------------------");
-										lD->getRD()->pushMessage("------------------------Do your gesture NOW during 3 secondes------------------------");
+										else {
+											pair<string, long> temp("", symbol);
+											learningGesture.push_back(temp);
+											cpt_Gesture++;
+											string msg = "------------------------BE READY FOR THE GESTURE NUMERO " + to_string(cpt_Gesture) + " IN 5 SECONDES------------------------";
+											Debugger::info(msg);
+											pushMessage(msg);
+											for (int i = 5; i > 0; i--) {
+												Debugger::info(to_string(i));
+												Sleep(1000);
+											}
+											Debugger::info("------------------------Do your gesture NOW during 3 secondes------------------------");
+											pushMessage("------------------------Do your gesture NOW during 3 secondes------------------------");
+										}
 									}
-							//	}
+									lD->getRD()->setAnswer(NULL);
+								}
 							}
 
 
@@ -234,6 +231,7 @@ void ThreadLearningHandTools::run() {
 	{
 		ct.releaseAll();
 		Debugger::error("Failed Initializing PXCSenseManager");
+		emit signalGUI(-2);
 		return;
 	}
 
@@ -241,10 +239,9 @@ void ThreadLearningHandTools::run() {
 	ct.releaseAll();
 
 
-	#ifdef _WIN32
+#ifdef _WIN32
 	WSACleanup();
-	#endif
-	
+#endif
 }
 
 ThreadLearningHandTools::~ThreadLearningHandTools()

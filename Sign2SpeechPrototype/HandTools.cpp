@@ -1,8 +1,11 @@
 #include <algorithm>
 #include "HandTools.h"
-#include "ThreadHandTools.h"
 #include "Debugger.h"
 
+
+HandTools::HandTools(ThreadLearningHandTools * h) {
+	tLHT = h;
+}
 /** Calculate the time diffence between two times **/
 int diffMilliseconds(SYSTEMTIME t1, SYSTEMTIME t2) {
 	return ((t2.wMinute * 60000 + t2.wSecond * 1000 + t2.wMilliseconds) - (t1.wMinute * 60000 + t1.wSecond * 1000 + t1.wMilliseconds));
@@ -258,7 +261,7 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 	}
 	if(*nbFrame >= MAXFRAME || doAverage) {
 
-		Debugger::info("\t\t\tDo Average");
+		tLHT->pushMessage("\t\t\tDo Average");
 
 		uint32_t average = calculateAverage(handData, min(MAXFRAME, *nbReadFrame));
 		uint8_t movement = analyseMovement(massCenterCoordinates, min(MAXFRAME, *nbReadFrame));
@@ -525,16 +528,16 @@ long HandTools::analyseXGestures(PXCHandData::IHand* hand) {
 		nbMassCenter = 0;
 
 		if (nbGesture < 3) {
-			Debugger::info("----> Repeat the same gesture in 5 seconds... <----");
+			tLHT->pushMessage("----> Repeat the same gesture in 5 seconds... <----");
 			for (int i = 5; i > 0; i--) {
-				Debugger::info(to_string(i));
+				tLHT->pushMessage(to_string(i));
 				Sleep(1000);
 			}
-			Debugger::info("----> NOW <----");
+			tLHT->pushMessage("----> NOW <----");
 		}
 
 		else {
-			Debugger::info("----> Please wait... <----");
+			tLHT->pushMessage("----> Please wait... <----");
 
 			// average of the vector composed of the 3 repeated gestures
 			avg = calculateAverage(handData, nbFrame);

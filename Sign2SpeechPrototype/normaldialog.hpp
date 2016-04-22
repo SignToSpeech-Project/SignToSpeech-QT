@@ -18,6 +18,7 @@ public:
 	~normalDialog();
 	mutex * getMBufferR() { return &mBufferR; }
 	mutex * getMSymbolSent() { return &mSymbolSent; }
+	mutex * getMPushMessage() { return &mPushMessage; }
 	bool * getSymbolSent() { return &symbolSent; }
 	bool * getPG() { return &program_on; }
 	bool * getPGR() { return &program_on_room; }
@@ -38,6 +39,7 @@ private:
 
 	mutex mBufferR; //Mutex for the Reading buffer
 	mutex mSymbolSent; //Mutex for the boolean SymbolSent 
+	mutex mPushMessage; //Mutex to prevent Threads to try to write at the same in the GUI
 	bool symbolSent; //To know if the Dictionnary sent a word on WebRTC
 	vector<long> bufferRead; //Buffer of words that will be sent on WebRTC
 	string address;
@@ -51,9 +53,9 @@ private:
 	roomDialog * rD;
 
 	void  static threadDico(normalDialog * nD);
-	void static threadHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog * nD);
+	void static threadHandTools(mutex *mBR, mutex *mSS, mutex * mPM, bool* pg, bool * bro, vector<long>* bR, string *ad, string *r, bool *sS, condition_variable *cD, normalDialog * nD);
 
-	std::thread* tHandTools = new std::thread(threadHandTools, &mBufferR, &mSymbolSent, &program_on, &program_on_room, &bufferRead, &address, &room, &symbolSent, &cond_var_gui, this);
+	std::thread* tHandTools = new std::thread(threadHandTools, &mBufferR, &mSymbolSent, &mPushMessage, &program_on, &program_on_room, &bufferRead, &address, &room, &symbolSent, &cond_var_gui, this);
 	std::thread* tDico = new std::thread(threadDico, this);
 
 

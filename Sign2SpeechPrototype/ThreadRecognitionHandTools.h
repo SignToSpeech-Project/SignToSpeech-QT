@@ -28,11 +28,12 @@ private:
 	normalDialog *nD;
 
 public:
-	ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, bool* pg, bool * bro, vector<long>* bR, string *ad,string *r, bool *sS, condition_variable *cD, normalDialog *nd);
+	ThreadRecognitionHandTools(mutex *mBR, mutex *mSS, mutex * mPM, bool* pg, bool * bro, vector<long>* bR, string *ad,string *r, bool *sS, condition_variable *cD, normalDialog *nd);
 
 	static WebSocket::pointer webSock;
 
 	void static handle_message(const std::string & message);
+	void pushMessage(string msg);
 
 	//Start the thread
 	void run();

@@ -6,9 +6,15 @@
 
 
 
-ThreadRecognitionDictionary::ThreadRecognitionDictionary(normalDialog* nd) : ThreadRecognition(nd->getMBufferR(), nd->getMSymbolSent(), nd->getPG(), nd->getPGR(), nd->getBufferRead(), nd->getSymbolSent(), nd->getCondGui())
+ThreadRecognitionDictionary::ThreadRecognitionDictionary(normalDialog* nd) : ThreadRecognition(nd->getMBufferR(), nd->getMSymbolSent(), nd->getMPushMessage(), nd->getPG(), nd->getPGR(), nd->getBufferRead(), nd->getSymbolSent(), nd->getCondGui())
 {
 	nD = nd;
+}
+
+void ThreadRecognitionDictionary::pushMessage(string msg) {
+	mPushMessage->lock();
+	if (*program_on_room) nD->getRD()->pushMessage(QString::fromStdString(msg));
+	mPushMessage->unlock();
 }
 
 void ThreadRecognitionDictionary::run() {
@@ -43,7 +49,7 @@ void ThreadRecognitionDictionary::run() {
 				string currentSymbol = d.refreshDictionary();
 				if ((currentSymbol != "") && (currentSymbol != "0x1 : root")) {
 					Debugger::info("Sending: " + currentSymbol);
-					nD->getRD()->pushMessage(QString::fromStdString("Sending: " + currentSymbol));
+					pushMessage("Sending: " + currentSymbol);
 					ThreadRecognitionHandTools::webSock->send("{\"content\":\"" + currentSymbol + "\"}");
 					mSymbolSent->lock();
 					*symbolSent = true;
@@ -61,13 +67,13 @@ void ThreadRecognitionDictionary::run() {
 				mBufferR->lock();
 				vector<long>::iterator it = bufferRead->begin();
 				string currentSymbol = d.read(*it);
-			std:stringstream out;
+				std:stringstream out;
 				out << "Reading : " << (*it) << " Signification : " << currentSymbol << endl;
 				Debugger::debug(out.str());
-				//nD->getRD()->pushMessage(QString::fromStdString(out.str()));
+				//pushMessage(QString::fromStdString(out.str()));
 				if ((currentSymbol.find("0x0 : Not final word") == std::string::npos) && (currentSymbol != "0x1 : root") && (currentSymbol != "")) {
 					Debugger::info("Sending: " + currentSymbol);
-					nD->getRD()->pushMessage(QString::fromStdString("Sending: " + currentSymbol));
+					pushMessage("Sending: " + currentSymbol);
 					ThreadRecognitionHandTools::webSock->send("{\"content\":\"" + currentSymbol + "\"}");
 					mSymbolSent->lock();
 					*symbolSent = true;
@@ -84,8 +90,9 @@ void ThreadRecognitionDictionary::run() {
 		}
 		std::mutex m;
 		std::unique_lock<std::mutex> lock(m);
-		cond_var_gui->wait(lock); //Sleep until roomWindows is on
-
+		cout << "dico sleep" << endl;
+		if ((*program_on) && (!*program_on_room)) cond_var_gui->wait(lock); //Sleep until roomWindows is on
+		cout << "dico awake" << endl;
 	}
 }
 

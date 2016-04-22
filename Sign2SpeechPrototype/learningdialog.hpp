@@ -7,13 +7,12 @@
 #include <iostream>
 #include "ui_learningdialog.h"
 #include "ThreadLearningDictionary.h"
-#include "ThreadLearningHandTools.h"
+#include "ThreadLearningHandTools.hpp"
 #include "recordingdialog.hpp"
-
 using namespace std;
 
 
-
+class ThreadLearningHandTools;
 
 
 class learningDialog : public QWidget {
@@ -30,10 +29,15 @@ public:
 	vector<vector<pair<string, long>>> * getBufferWrite() {	return &bufferWrite; }
 	condition_variable * getCondGui() { return &cond_var_gui; }
 	condition_variable * getCondDico() { return &cond_var_dico; }
-
 	~learningDialog();
-	
+	ThreadLearningHandTools * tHandTools; 
+
 	void setParent(QWidget* p) { parent = p; }
+
+
+public slots:
+	void setButtons(int i);
+
 
 private slots:
 	void on_pushButtonValidation_clicked();
@@ -54,10 +58,7 @@ private:
 
 	QWidget* parent;
 	Ui::learningDialog ui;
-	void  static threadHandTools(learningDialog * rD);
 	void static threadDico(bool *program_on, std::mutex* mBufferW, vector<vector<pair<string, long>>>* bufferWrite, condition_variable *cond_var_dico);
-
-	std::thread* tHandTools = new std::thread(threadHandTools, this);
 	std::thread* tDico = new std::thread(threadDico, &program_on, &mBufferW, &bufferWrite, &cond_var_dico);
 
 
