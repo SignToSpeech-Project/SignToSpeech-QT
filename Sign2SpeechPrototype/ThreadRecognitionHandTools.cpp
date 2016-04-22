@@ -75,6 +75,7 @@ void ThreadRecognitionHandTools::run() {
 
 		g_handConfiguration->EnableStabilizer(true);
 		g_handConfiguration->SetTrackingMode(PXCHandData::TRACKING_MODE_FULL_HAND);
+		g_handConfiguration->SetSmoothingValue(1);
 
 		// Apply configuration setup
 		g_handConfiguration->ApplyChanges();

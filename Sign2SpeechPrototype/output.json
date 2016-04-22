@@ -1,8 +1,12 @@
 {
-	"lundi": [
+	"Edwin": [
 		{
 			"word": "lundi",
 			"gesture": "0x0000000f"
+		},
+		{
+			"word": "Edwin",
+			"gesture": "0x00000000"
 		}
 	],
 	"mardi": [

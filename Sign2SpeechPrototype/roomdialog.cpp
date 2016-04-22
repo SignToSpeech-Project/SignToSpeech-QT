@@ -100,6 +100,10 @@ void roomDialog::setRecognizedPoints(PXCHandData::IHand *hand, QColor color) {
 		paint.drawPoint(x, y);
 	}
 
+	PXCPointF32 mass = hand->QueryMassCenterImage();
+	paint.setPen(QPen(Qt::green, 8, Qt::SolidLine, Qt::SquareCap, Qt::BevelJoin));
+	paint.drawPoint(mass.x, mass.y);
+
 	paint.end();
 }
 
