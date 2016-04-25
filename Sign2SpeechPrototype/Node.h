@@ -2,6 +2,8 @@
 #include <vector>
 #include <string>
 
+#include "Scoring.h"
+
 using std::vector;
 using std::string;
 
@@ -17,9 +19,6 @@ private:
 	vector <Node*> children;
 	long symbol;
 	string word;
-
-	//Return the amount of difference of the fingers between 2 symbols following the function : 10 * eg + 3 * em + es + nbdif;
-	int scoreGeasture(long s1, long s2); 
 
 public:
 

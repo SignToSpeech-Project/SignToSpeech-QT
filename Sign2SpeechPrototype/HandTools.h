@@ -12,6 +12,7 @@
 #include "pxchandconfiguration.h"
 #include "pxcsensemanager.h"
 #include "ThreadLearningHandTools.hpp"
+#include "Scoring.h"
 
 #ifndef DEF_HT
 #define DEF_HT
@@ -56,8 +57,11 @@ private :
 	time_t start;
 	SYSTEMTIME gestureStart;
 
-	// Variables for trajectory recognition
+	// Variables for comparison with current and previous gesture
+	PXCHandData::FingerData currentHandData[1000][5];
 	PXCPoint3DF32 currentMassCenters[1000];
+
+	// Variables for trajectory recognition
 	PXCPoint3DF32 massCenterCoordinates[1000];
 	vector<uint8_t> trajectories;
 

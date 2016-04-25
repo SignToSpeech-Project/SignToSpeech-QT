@@ -205,42 +205,59 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 		// empty the hand array if at least 250ms has passed
 		SYSTEMTIME currentTime;
 		GetSystemTime(&currentTime);
-		if (diffMilliseconds(currentTime, gestureStart) >= 250) {
-			GetSystemTime(&gestureStart);
+		if (diffMilliseconds(gestureStart, currentTime) >= 500) {
 			*nbReadFrame = 0;
 			*nbFrame = 0;
 		}
+		GetSystemTime(&gestureStart);
 
 		// check if the previous set of frames is not too different from the new frame 
 		// each 10 frames
-		if ((*nbFrame) % 10 == 0 && (*nbFrame) != 0) {
-			uint32_t avgTmp = calculateAverage(handData, *nbReadFrame);
-			if (analyseMovement(massCenterCoordinates, *nbReadFrame) != analyseMovement(currentMassCenters, 9)) {
-				if (*nbReadFrame > 40) {
-					Debugger::debug("\t Gestures are differents - Only keep the previous gesture");
-					writeAllowed = false;
-					doAverage = true;
-					(*nbReadFrame) -= 10;
-					//(*nbFrame)++;
-				}
-			}
-			if (writeAllowed && calculateHammingDistance(avgTmp, handToInt(hand), 10, 2) >= 4) {
-				//if (*nbReadFrame < (MAXFRAME / 3)) {
-				//	// remove all the previous gesture
-				//	Debugger::debug("Remove the previous gesture");
-				//	*nbReadFrame = 0;
-				//	*nbFrame = 0;
-				//}
-				//else if (*nbReadFrame > 2*(MAXFRAME / 3)) {
-					// we only keep the previous gesture
+		
+		if (*nbReadFrame > 30) {
+			if ((*nbFrame) % 10 == 0 && (*nbFrame) != 0) {
+				cout << (*nbFrame) << endl;
 
-				if (*nbReadFrame > 40) {
-					Debugger::debug("Only keep the previous gesture");
-					writeAllowed = false;
-					doAverage = true;
-					//(*nbFrame)++;
+				uint32_t avgPrev = calculateAverage(handData, *nbReadFrame) | (analyseMovement(massCenterCoordinates, (*nbReadFrame)-10) << 10);
+				uint32_t avgCurr = calculateAverage(currentHandData, 9) | (analyseMovement(currentMassCenters, 9) << 10);
+
+				/*if (analyseMovement(massCenterCoordinates, *nbReadFrame) != analyseMovement(currentMassCenters, 9)) {
+					if (*nbReadFrame > 40) {
+						Debugger::debug("\t Gestures are differents - Only keep the previous gesture");
+						writeAllowed = false;
+						doAverage = true;
+						(*nbReadFrame) -= 10;
+						//(*nbFrame)++;
+					}
 				}
-				//}
+				if (writeAllowed && calculateHammingDistance(avgPrev, handToInt(hand), 10, 2) >= 4) {
+					//if (*nbReadFrame < (MAXFRAME / 3)) {
+					//	// remove all the previous gesture
+					//	Debugger::debug("Remove the previous gesture");
+					//	*nbReadFrame = 0;
+					//	*nbFrame = 0;
+					//}
+					//else if (*nbReadFrame > 2*(MAXFRAME / 3)) {
+						// we only keep the previous gesture
+
+					if (*nbReadFrame > 40) {
+						Debugger::debug("Only keep the previous gesture");
+						writeAllowed = false;
+						doAverage = true;
+						//(*nbFrame)++;
+					}
+					//}
+				}*/
+
+				if (Scoring::calculateScore(avgPrev, avgCurr) > 8) {
+					//if (*nbReadFrame > 30) {
+						Debugger::debug("\t Gestures are differents - Only keep the previous gesture");
+						writeAllowed = false;
+						doAverage = true;
+						(*nbReadFrame) -= 10;
+						//(*nbFrame)++;
+					//}
+				}
 			}
 		}
 
@@ -250,6 +267,7 @@ long HandTools::analyseGesture(PXCHandData::IHand *hand) {
 			for (int f = 0; f < 5; f++) {
 				if (hand->QueryFingerData((PXCHandData::FingerType)f, fingerData) == PXC_STATUS_NO_ERROR) {
 					handData[*nbReadFrame][f] = fingerData;
+					currentHandData[(*nbReadFrame) % 10][f] = fingerData;
 				}
 			}
 			// add the coordinates of the mass center into the table

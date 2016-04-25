@@ -21,9 +21,9 @@ void ThreadRecognitionHandTools::pushMessage(string msg) {
 
 /** Display incoming message from the subtitling channel **/
 void ThreadRecognitionHandTools::handle_message(const std::string & message) {
-	std::stringstream out;
+	/*std::stringstream out;
 	out << ">>> " << message;
-	Debugger::debug(out.str());
+	Debugger::debug(out.str());*/
 }
 
 void ThreadRecognitionHandTools::run() {

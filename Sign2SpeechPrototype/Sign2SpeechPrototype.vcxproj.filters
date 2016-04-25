@@ -255,6 +255,9 @@
     <ClInclude Include="GeneratedFiles\ui_reviewdialog.h">
       <Filter>Generated Files</Filter>
     </ClInclude>
+    <ClInclude Include="Scoring.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="myapp.rc" />
